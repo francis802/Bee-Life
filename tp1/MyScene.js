@@ -42,6 +42,7 @@ export class MyScene extends CGFscene {
     this.displayParallelogram = true;
     this.displayTriangleSmall = true;
     this.displayTriangleBig = true;
+    this.displayTriangleSmall = true;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -78,11 +79,7 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-    if (this.displayTriangle) this.triangle.display();
-    if (this.displayDiamond) this.diamond.display();
-    if (this.displayParallelogram) this.parallelogram.display();
-    if (this.displayTriangleBig) this.triangleBig.display();
-    if (this.displayTriangleSmall) this.triangleSmall.display();
+    
 
     this.setDefaultAppearance();
 
@@ -108,7 +105,11 @@ export class MyScene extends CGFscene {
     this.multMatrix(sca);
 
     // ---- BEGIN Primitive drawing section
-
+    if (this.displayTriangle) this.triangle.display();
+    if (this.displayDiamond) this.diamond.display();
+    if (this.displayParallelogram) this.parallelogram.display();
+    if (this.displayTriangleBig) this.triangleBig.display();
+    if (this.displayTriangleSmall) this.triangleSmall.display();
   
     // ---- END Primitive drawing section
   }
