@@ -13,3 +13,4 @@ Não houve dificuldades nesta parte.
 
 ### 4. Geometria composta - Cubo composto por planos
 Não houve dificuldades nesta parte.
+![Screenshot 1](screenshots/CG-t06g12-tp2-3.png)
