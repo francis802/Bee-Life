@@ -95,17 +95,11 @@ export class MyTangram extends CGFobject {
       
           // F2 - Parallelogram
           this.scene.pushMatrix();
-          this.scene.translate(-1,1,0);
-          this.scene.rotate(-Math.PI/2,0,0,1);
-          this.scene.setDiffuse(2, 2.5, 0, 10);
-          this.f4.display();
-          this.scene.popMatrix();
-
-          this.scene.pushMatrix();
-          this.scene.translate(-3,1,0);
-          this.scene.rotate(Math.PI/2,0,0,1);
-          this.scene.setDiffuse(2, 2, 0, 10);
-          this.f4.display();
+          this.scene.translate(0, 2, 0);
+          this.scene.scale(1.4, 1.4, 1.4);
+          this.scene.rotate(Math.PI/4, 0, 0, 1);
+          this.scene.rotate(Math.PI, 0, 1, 0);
+          this.f2.display();
           this.scene.popMatrix();
       
           // F3 - Big Triangle 1
