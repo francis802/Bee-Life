@@ -1,7 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyQuad } from "./MyQuad.js";
-
 import { MyTangram } from "./MyTangram.js"
+import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
 
 /**
@@ -27,40 +27,50 @@ export class MyScene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.enableTextures(true);
 
+          //------ Applied Material
+          this.quadMaterial = new CGFappearance(this);
+          this.quadMaterial.setAmbient(0.1, 0.1, 0.1, 1);
+          this.quadMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
+          this.quadMaterial.setSpecular(0.1, 0.1, 0.1, 1);
+          this.quadMaterial.setShininess(10.0);
+          this.quadMaterial.loadTexture('images/default.png');
+          this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
+          //------
+
+         //------ Textures
+         this.texture1 = new CGFtexture(this, 'images/board.jpg');
+         this.texture2 = new CGFtexture(this, 'images/floor.png');
+         this.texture3 = new CGFtexture(this, 'images/window.jpg');
+ 
+         this.texture4 = new CGFtexture(this, 'images/tangram.png')
+ 
+         this.texture_top = new CGFtexture(this, 'images/mineTop.png');
+         this.texture_side = new CGFtexture(this, 'images/mineSide.png');
+         this.texture_bottom = new CGFtexture(this, 'images/mineBottom.png');
+ 
+         //-------
+
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
-
         this.tangram = new MyTangram(this);
+        this.cube = new MyUnitCubeQuad(this, this.texture_top, this.texture_side, this.texture_side, this.texture_side, this.texture_side, this.texture_bottom);
 
 
-        //------ Applied Material
-        this.quadMaterial = new CGFappearance(this);
-        this.quadMaterial.setAmbient(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.quadMaterial.setSpecular(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setShininess(10.0);
-        this.quadMaterial.loadTexture('images/default.png');
-        this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
-        //------
+      
 
-        //------ Textures
-        this.texture1 = new CGFtexture(this, 'images/board.jpg');
-        this.texture2 = new CGFtexture(this, 'images/floor.png');
-        this.texture3 = new CGFtexture(this, 'images/window.jpg');
-
-        this.texture4 = new CGFtexture(this, 'images/tangram.png')
-
-        //-------
+       
 
         //-------Objects connected to MyInterface
         this.displayAxis = true;
+        this.displayQuad = true;
         this.scaleFactor = 5;
         this.selectedTexture = -1;        
         this.wrapS = 0;
         this.wrapT = 0;
 
-<<<<<<< tp4/MyScene.js
+        this.displayCube = true;
+
         this.textures = [this.texture1, this.texture2, this.texture3, this.texture4];
         this.texCoords = [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
         this.wrappingMethods = ['REPEAT', 'CLAMP_TO_EDGE', 'MIRRORED_REPEAT'];
@@ -127,7 +137,10 @@ export class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        this.quadMaterial.apply();
+        if (this.displayQuad){
+            this.quadMaterial.apply();
+            this.quad.display();
+        }
 
         // Default texture filtering in WebCGF is LINEAR. 
         // Uncomment next line for NEAREST when magnifying, or 
@@ -135,7 +148,11 @@ export class MyScene extends CGFscene {
         
         // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        this.quad.display();
+      
+
+        if(this.displayCube){
+            this.cube.display();
+        }
 
         // ---- END Primitive drawing section
     }
