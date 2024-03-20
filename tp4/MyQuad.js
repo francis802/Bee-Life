@@ -1,16 +1,16 @@
 import {CGFobject} from '../lib/CGF.js';
 /**
- * MyQuad
+ * MyDiamond
  * @constructor
- * @param {MyScene} scene - Reference to MyScene object
- * @param {Array} coords - Array of texture coordinates (optional)
+ * @param scene - Reference to MyScene object
  */
 export class MyQuad extends CGFobject {
-	constructor(scene, coords) {
+	constructor(scene, coordinates) {
 		super(scene);
 		this.initBuffers();
-		if (coords != undefined)
-			this.updateTexCoords(coords);
+		if (coordinates != undefined)
+			this.updateTexureCoordinates(coords);
+
 	}
 	
 	initBuffers() {
@@ -27,23 +27,12 @@ export class MyQuad extends CGFobject {
 			1, 3, 2
 		];
 
-		//Facing Z positive
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,
 			0, 0, 1,
 			0, 0, 1
 		];
-		
-		/*
-		Texture coords (s,t)
-		+----------> s
-        |
-        |
-		|
-		v
-        t
-        */
 
 		this.texCoords = [
 			0, 1,
@@ -51,17 +40,14 @@ export class MyQuad extends CGFobject {
 			0, 0,
 			1, 0
 		]
+
 		this.primitiveType = this.scene.gl.TRIANGLES;
+
 		this.initGLBuffers();
 	}
-
-	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the quad
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	
+	updateTexureCoordinates(coordinates) {
+		this.texCoords = [...coordinates];
 		this.updateTexCoordsGLBuffers();
 	}
 }
