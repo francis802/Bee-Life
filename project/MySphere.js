@@ -27,7 +27,7 @@ export class MySphere extends CGFobject {
             this.texCoords.push(0, 1 - i / (this.stacks * 2));
         }
 
-        for (let i = 1; i <= this.slices; i++) {
+        for (let i = 0; i <= this.slices; i++) {
             const angle_xz = (2 * Math.PI * i) / this.slices;
             this.vertices.push(0, -this.radius, 0);
             this.texCoords.push(0, 1);
@@ -42,7 +42,7 @@ export class MySphere extends CGFobject {
 
                 this.vertices.push(this.radius * x, this.radius * y * y_factor, this.radius * z);
                 this.normals.push(this.inside * x, this.inside * y, this.inside * z);
-                this.texCoords.push(i / this.slices, 1 - j / (this.stacks * 2));
+                this.texCoords.push((1- i) / this.slices, (1 - j) / (this.stacks * 2));
 
                 const points = this.vertices.length / 3;
                 const index_c = points - 2;

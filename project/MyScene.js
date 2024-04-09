@@ -28,7 +28,7 @@ export class MyScene extends CGFscene {
 
     //------ Textures
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
-    this.panorama_texture = new CGFtexture(this, 'images/grass_panorama.jpg');
+    this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
 
 
     //Initialize scene objects
