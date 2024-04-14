@@ -47,15 +47,15 @@ export class MyFlower extends CGFobject {
         let angle = i * angleIncrement +  0.3;
 
         // Calcular as coordenadas x e y da posição da pétala no plano XY
-        let x = Math.cos(angle) * (radius + 0.5);
-        let y = Math.sin(angle) * (radius + 0.5);
+        let x = Math.cos(angle) * (radius);
+        let y = Math.sin(angle) * (radius);
 
         // Calcular o ângulo de orientação da pétala
         let orientationAngle = angle + Math.PI / 2;
 
         // Exibir a pétala na posição calculada
         this.scene.pushMatrix();
-        this.scene.translate(x, y+6, startY);
+        this.scene.translate(x, y+6, startY+0.5);
         this.scene.rotate(Math.PI, 0, 0, 0); // Orientar a pétala para cima
         this.scene.rotate(orientationAngle, 0, 0, 1); // Orientar a pétala para que uma das pontas aponte para o centro da circunferência
         this.petals[i].display();
