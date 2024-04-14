@@ -1,7 +1,8 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
-import { MySphere } from "./MySphere.js";
+import {MyFlower} from './MyFlower.js';
 import { MyPanorama } from "./MyPanorama.js";
+import { MyStem } from "./MyStem.js";
 
 /**
  * MyScene
@@ -34,8 +35,10 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    //this.sphere = new MySphere(this, 200, 20, 20)
     this.panorama = new MyPanorama(this, this.panorama_texture);
+    this.flower = new MyFlower(this);
+    this.stem = new MyStem(this, 20, 20);
+    
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -91,6 +94,11 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
+    this.pushMatrix();
+    this.flower.display();
+    this.popMatrix();
+
+
 
     this.pushMatrix();
     this.appearance.apply();
@@ -102,14 +110,14 @@ export class MyScene extends CGFscene {
 
     this.setGlobalAmbientLight(this.globalAmbientLight, this.globalAmbientLight, this.globalAmbientLight, 1.0);
 
-    if(this.displaySphere){
-      this.pushMatrix();
-      this.earth_texture.bind();
-      //this.sphere.display();
-      this.popMatrix();
-    }
+   
 
+    this.pushMatrix();
     this.panorama.display();
+    this.popMatrix();
+
+   
+    //this.sphere.display();
 
 
     // ---- END Primitive drawing section
