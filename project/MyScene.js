@@ -3,6 +3,7 @@ import { MyPlane } from "./MyPlane.js";
 import {MyFlower} from './MyFlower.js';
 import { MyPanorama } from "./MyPanorama.js";
 import { MyStem } from "./MyStem.js";
+import { MyPetal} from "./MyPetal.js";
 
 /**
  * MyScene
@@ -38,6 +39,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, this.panorama_texture);
     this.flower = new MyFlower(this);
     this.stem = new MyStem(this, 20, 20);
+    this.triangle = new MyPetal(this);
     
 
     //Objects connected to MyInterface
@@ -94,11 +96,14 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
+    
     this.pushMatrix();
     this.flower.display();
+    //this.triangle.display();
     this.popMatrix();
 
-
+    
+   
 
     this.pushMatrix();
     this.appearance.apply();

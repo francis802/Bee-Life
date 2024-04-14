@@ -1,4 +1,5 @@
 import {CGFobject} from '../lib/CGF.js';
+import {MyTriangle} from './MyTriangle.js';
 /**
  * MyDiamond
  * @constructor
@@ -7,28 +8,25 @@ import {CGFobject} from '../lib/CGF.js';
 export class MyPetal extends CGFobject {
 	constructor(scene) {
 		super(scene);
-		this.initBuffers();
+		
+		this.triagle = new MyTriangle(scene);
+		this.rotation_angle = 30;
+	}
+
+	display() {
+		
+
+		this.scene.pushMatrix();
+		this.scene.rotate(-this.rotation_angle * Math.PI / 180, 1, 0, 0);
+		this.triagle.display();
+		this.scene.popMatrix();
+
+		this.scene.pushMatrix();
+		this.scene.rotate(180 * Math.PI / 180, 1, 0, 0);
+		this.triagle.display();
+		this.scene.popMatrix();
 	}
 	
-	initBuffers() {
-		this.vertices = [
-			-1, 0, 0,	//0
-			0, -2, 0,	//1
-			0, 2, 0,	//2
-			1, 0, 0		//3
-		];
 
-		//Counter-clockwise reference of vertices
-		this.indices = [
-			0, 1, 2,
-			1, 3, 2
-		];
-
-		//The defined indices (and corresponding vertices)
-		//will be read in groups of three to draw triangles
-		this.primitiveType = this.scene.gl.TRIANGLES;
-
-		this.initGLBuffers();
-	}
 }
 
