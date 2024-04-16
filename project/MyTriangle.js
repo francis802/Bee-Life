@@ -5,16 +5,16 @@ import {CGFobject} from '../lib/CGF.js';
  * @param scene - Reference to MyScene object
  */
 export class MyTriangle extends CGFobject {
-	constructor(scene) {
+	constructor(scene, lenghtPetal=1) {
 		super(scene);
-		this.initBuffers();
+		this.initBuffers(lenghtPetal);
 	}
 	
-	initBuffers() {
+	initBuffers(lenghtPetal) {
 		this.vertices = [
-			-1, -0, 0,	//0
-			1, 0, 0,	//1
-			0, 2, 0,	//2
+			(-1*lenghtPetal), -0, 0,	//0
+			(1*lenghtPetal), 0, 0,	//1
+			0, (2*lenghtPetal), 0,	//2
 		];
 
 		//Counter-clockwise reference of vertices
