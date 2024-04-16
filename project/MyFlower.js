@@ -25,9 +25,6 @@ export class MyFlower extends CGFobject {
         
         // Stem:
         this.scene.pushMatrix(); 
-        this.scene.rotate(-Math.PI/2,1,0,0);
-        this.scene.scale(this.radiumStem,this.radiumStem,5);
-        this.scene.setDiffuse(0, 5, 0, 5);
         this.stem.display();
         this.scene.popMatrix();
         
