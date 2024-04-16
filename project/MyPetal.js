@@ -6,10 +6,10 @@ import {MyTriangle} from './MyTriangle.js';
  * @param scene - Reference to MyScene object
  */
 export class MyPetal extends CGFobject {
-	constructor(scene) {
+	constructor(scene, lenghtPetal=1) {
 		super(scene);
 		
-		this.triagle = new MyTriangle(scene);
+		this.triagle = new MyTriangle(scene, lenghtPetal);
 		this.rotation_angle = 30;
 	}
 
