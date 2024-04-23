@@ -5,6 +5,7 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyStem } from "./MyStem.js";
 import { MyPetal} from "./MyPetal.js";
 import { MyCylinder } from "./MyCylinder.js";
+import { MyGarden } from "./MyGarden.js";
 
 
 /**
@@ -43,6 +44,7 @@ export class MyScene extends CGFscene {
     this.stem = new MyStem(this, 20, 20);
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
+    this.garden = new MyGarden(this, 5);
     
 
     //Objects connected to MyInterface
@@ -101,7 +103,8 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
     
     this.pushMatrix();
-    this.flower.display();
+    //this.flower.display();
+    this.garden.display();
     this.popMatrix();
 
     
@@ -118,7 +121,6 @@ export class MyScene extends CGFscene {
     this.setGlobalAmbientLight(this.globalAmbientLight, this.globalAmbientLight, this.globalAmbientLight, 1.0);
 
    
-
     this.pushMatrix();
     this.panorama.display();
     this.popMatrix();
