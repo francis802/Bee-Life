@@ -4,7 +4,7 @@ import { MyStem } from './MyStem.js';
 import { MySphere } from './MySphere.js';
 
 export class MyFlower extends CGFobject {
-	constructor(scene, radiumFlower=1, numPetals=15, colorPetals=[2, 0, 1], radiumReceptacle=2, colorReceptacle=[2, 2, 0], radiumStem=0.5, heightStem=0, coloStem=[0, 5, 0]) {
+	constructor(scene, radiumFlower=1, numPetals=15, colorPetals=[2, 0, 1], radiumReceptacle=2, colorReceptacle=[2, 2, 0], radiumStem=0.5, heightStem=6, coloStem=[0, 5, 0]) {
 		super(scene);
         // Parameters:
         this.numPetals = numPetals; 
@@ -13,11 +13,12 @@ export class MyFlower extends CGFobject {
         this.coloStem = coloStem;
         this.colorReceptacle = colorReceptacle;
         this.colorPetals = colorPetals;
+        this.heightStem = heightStem;
 
         // Objects:
         this.receptacle = new MySphere(scene, radiumReceptacle, 20, 20, false);
         this.petal = new MyPetal(scene, this.lenghtPetals);
-        this.stem = new MyStem(scene, 20, 20);  
+        this.stem = new MyStem(scene, 20, 20, this.radiumFlower, this.heightStem);  
 	}
 
     
@@ -31,7 +32,7 @@ export class MyFlower extends CGFobject {
        
         // Receptacle:
         this.scene.pushMatrix();
-        this.scene.translate(0,6,0);
+        this.scene.translate(0,this.heightStem+this.receptacle.radius,0);
         this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.setDiffuse(2, 2, 0, 5);
         this.receptacle.display();
@@ -59,13 +60,14 @@ export class MyFlower extends CGFobject {
 
         // Exibir a pétala na posição calculada
         this.scene.pushMatrix();
-        this.scene.translate(x, y+6, startY+0.5);
+        this.scene.translate(x, y+this.heightStem+this.receptacle.radius, startY+0.5);
         this.scene.rotate(Math.PI, 0, 0, 0); // Orientar a pétala para cima
         this.scene.rotate(orientationAngle, 0, 0, 1); // Orientar a pétala para que uma das pontas aponte para o centro da circunferência
         this.scene.setDiffuse(2, 0, 1, 5);
         this.petal.display();
         this.scene.popMatrix();
     }
+    
     
     }
 }

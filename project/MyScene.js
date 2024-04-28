@@ -103,7 +103,7 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
     
     this.pushMatrix();
-    //this.flower.display();
+    this.flower.display();
     this.garden.display();
     this.popMatrix();
 
