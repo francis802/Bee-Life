@@ -1,5 +1,6 @@
 import { CGFobject } from '../lib/CGF.js';
 import { MyCylinder } from './MyCylinder.js';
+import { MyLeaf } from './MyLeaf.js';
 import { MyPetal } from './MyPetal.js';
 /**
  * MyCylinder
@@ -12,7 +13,7 @@ export class MyStem extends CGFobject {
         this.cylinder = new MyCylinder(scene, slices, stacks);
         this.radiumStem = radiumStem;
         this.numSubStem = numSubStem;
-        this.leaf = new MyPetal(scene);
+        this.leaf = new MyLeaf(scene, radiumStem);
         this.heights = [];
         this.angles = [];
         this.createRandomStem();
@@ -20,7 +21,7 @@ export class MyStem extends CGFobject {
 
     createRandomStem(){
         var minSubStem = 1;
-        var maxSubStem = 5;
+        var maxSubStem = 3.5;
         var minAngle = 0;
         var maxAngle = Math.PI/6;
         var sumAngles = 0;
@@ -92,6 +93,14 @@ export class MyStem extends CGFobject {
             var adjustZ = this.radiumStem*Math.cos(this.angles[i]);
 
             if (i%2 == 0){
+                if (i != 0 && i != this.numSubStem - 1 && this.heights[i] > 1){
+                    this.scene.pushMatrix();
+                    this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ);
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.rotate(Math.PI,Math.PI,Math.PI*3/4,0);
+                    this.leaf.display();
+                    this.scene.popMatrix();
+                }
                 this.scene.pushMatrix();
                 this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ);
                 this.scene.rotate(-Math.PI/2-this.angles[i],1,0,0);
@@ -103,6 +112,14 @@ export class MyStem extends CGFobject {
                 totalHeight += height1*Math.cos(this.angles[i]) - adjustY;
             }
             else {
+                if (i != 1 && i != this.numSubStem - 1 && this.heights[i] > 1){
+                    this.scene.pushMatrix();
+                    this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ - this.heights[i-1]*Math.sin(this.angles[i-1]));
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.rotate(0,-Math.PI/2,Math.PI*3/4,0);
+                    this.leaf.display();
+                    this.scene.popMatrix();
+                }
                 this.scene.pushMatrix();
                 var height2 = this.heights[i];
                 deltaZ += this.heights[i]*Math.sin(this.angles[i]) - this.heights[i-1]*Math.sin(this.angles[i-1]);
