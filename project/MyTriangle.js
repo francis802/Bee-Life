@@ -12,24 +12,36 @@ export class MyTriangle extends CGFobject {
 	
 	initBuffers(lenghtPetal) {
 		this.vertices = [
-			(-1*lenghtPetal), -0, 0,	//0
+			(-1*lenghtPetal), 0, 0,	//0
 			(1*lenghtPetal), 0, 0,	//1
 			0, (2*lenghtPetal), 0,	//2
+
+			(-1*lenghtPetal), 0, 0,	//3
+			(1*lenghtPetal), 0, 0,	//4
+			0, (2*lenghtPetal), 0,	//5
 		];
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-			0, 2, 1
+			3, 5, 4
 		];
 
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,
+			0, 0, 1,
+			0, 0, -1,
+			0, 0, -1,
+			0, 0, -1
 			
 		]
 
 		this.textCoords = [
+			0, 0,
+			1, 0,
+			0, 1,
+			
 			0, 0,
 			1, 0,
 			0, 1
