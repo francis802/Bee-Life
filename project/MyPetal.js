@@ -22,7 +22,7 @@ export class MyPetal extends CGFobject {
 		this.scene.popMatrix();
 
 		this.scene.pushMatrix();
-		this.scene.rotate(180 * Math.PI / 180, 1, 0, 0);
+		this.scene.rotate(Math.PI, 1, 0, 0);
 		this.triagle.display();
 		this.scene.popMatrix();
 	}

@@ -41,7 +41,6 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.panorama = new MyPanorama(this, this.panorama_texture);
     this.flower = new MyFlower(this);
-    this.stem = new MyStem(this, 20, 20);
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
