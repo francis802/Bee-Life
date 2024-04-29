@@ -4,7 +4,7 @@ import { MyStem } from './MyStem.js';
 import { MySphere } from './MySphere.js';
 
 export class MyFlower extends CGFobject {
-	constructor(scene, lenghtPetals=1, numPetals=7, colorPetals=[2, 0, 1], radiumReceptacle=1, colorReceptacle=[0, 1, 1], radiumStem=0.1, heightStem=3, coloStem=[0, 5, 0]) {
+	constructor(scene, lenghtPetals=1, numPetals=7, colorPetals=[2, 0, 1], radiumReceptacle=1, colorReceptacle=[0, 1, 1], radiumStem=0.1, heightStem=6, coloStem=[0, 5, 0]) {
 		super(scene);
         // Parameters:
         this.numPetals = numPetals; 

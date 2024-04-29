@@ -22,30 +22,65 @@ export class MyStem extends CGFobject {
         var minSubStem = 1;
         var maxSubStem = 5;
         var minAngle = 0;
-        var maxAngle = Math.PI/4;
+        var maxAngle = Math.PI/6;
         var sumAngles = 0;
         var sumHeightsZ = 0;
-        for (let i= 0; i < this.numSubStem - 1; i++){
-            this.angles.push(Math.random()*(maxAngle - minAngle) + minAngle);
+        var maxHeightZ = maxSubStem*Math.sin(maxAngle);
+        let i = 0;
+        while(i < this.numSubStem - 2){
+            var angle = Math.random()*(maxAngle - minAngle) + minAngle;
             if (i%2 == 0){
-                sumAngles += this.angles[i];
+                if (sumAngles + angle > maxAngle){
+                    angle = maxAngle - sumAngles - Math.random()*(maxAngle - sumAngles);
+                }
+                sumAngles += angle;
+                
             }
             else{
-                sumAngles -= this.angles[i];
+                if (sumAngles - angle < -maxAngle){
+                    angle = maxAngle + sumAngles - Math.random()*(maxAngle + sumAngles);
+                }
+                sumAngles -= angle;
+            }
+            this.angles.push(angle)
+            i++;
+        }
+        i = 0;
+        while( i < this.numSubStem - 2){
+            var height = Math.random()*(maxSubStem - minSubStem) + minSubStem;
+            if (i%2 == 0){
+                if (sumHeightsZ + height*Math.sin(this.angles[i]) > maxHeightZ){
+                    height = (maxHeightZ - sumHeightsZ - Math.random()*(maxHeightZ - sumHeightsZ))/Math.sin(this.angles[i]);
+                }
+                sumHeightsZ += height*Math.sin(this.angles[i]);
+            }
+            else{
+                if (sumHeightsZ - height*Math.sin(this.angles[i]) < -maxHeightZ){
+                    height = (maxHeightZ + sumHeightsZ - Math.random()*(maxHeightZ + sumHeightsZ))/Math.sin(this.angles[i]);
+                }
+                sumHeightsZ -= height*Math.sin(this.angles[i]);
+            }
+            this.heights.push(height);
+            i++;
+        }
+        if (this.numSubStem != 1){
+            if ((this.numSubStem%2 == 0 && sumHeightsZ >0) || (this.numSubStem%2 != 0 && sumHeightsZ < 0)){
+                this.heights.push(Math.random()*(maxSubStem - minSubStem) + minSubStem);
+                this.angles.push(0);
+                this.heights.push(Math.abs(sumHeightsZ)/Math.sin(maxAngle));
+                this.angles.push(maxAngle);
+            }
+            else{
+                this.heights.push(Math.abs(sumHeightsZ)/Math.sin(maxAngle));
+                this.angles.push(maxAngle);
+                this.heights.push(Math.random()*(maxSubStem - minSubStem) + minSubStem);
+                this.angles.push(0);
             }
         }
-        this.angles.push((sumAngles)%(Math.PI/2));
-
-        for (let i = 0; i < this.numSubStem - 1; i++){
+        else {
             this.heights.push(Math.random()*(maxSubStem - minSubStem) + minSubStem);
-            if (i%2 == 0){
-                sumHeightsZ += this.heights[i]*Math.cos(this.angles[i]);
-            }
-            else{
-                sumHeightsZ -= this.heights[i]*Math.cos(this.angles[i]);
-            }
+            this.angles.push(0);
         }
-        this.heights.push(Math.abs(sumHeightsZ)/Math.cos(this.angles[this.numSubStem-1]));
     }
 
     display(){
