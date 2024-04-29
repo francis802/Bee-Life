@@ -8,11 +8,13 @@ import { MyPetal } from './MyPetal.js';
  * @param scene - Reference to MyScene object
  */
 export class MyStem extends CGFobject {
-    constructor(scene, slices, stacks, radiumStem, numSubStem) {
+    constructor(scene, slices, stacks, radiumStem, numSubStem, stemColor, leafColor) {
         super(scene);
         this.cylinder = new MyCylinder(scene, slices, stacks);
         this.radiumStem = radiumStem;
         this.numSubStem = numSubStem;
+        this.stemColor = stemColor;
+        this.leafColor = leafColor;
         this.leaf = new MyLeaf(scene, radiumStem);
         this.heights = [];
         this.angles = [];
@@ -112,7 +114,7 @@ export class MyStem extends CGFobject {
                 totalHeight += height1*Math.cos(this.angles[i]) - adjustY;
             }
             else {
-                if (i != 1 && i != this.numSubStem - 1 && this.heights[i] > 1){
+                if (i != this.numSubStem - 1 && this.heights[i] > 1){
                     this.scene.pushMatrix();
                     this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ - this.heights[i-1]*Math.sin(this.angles[i-1]));
                     this.scene.scale(0.4,0.4,0.4);

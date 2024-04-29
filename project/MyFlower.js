@@ -4,23 +4,26 @@ import { MyStem } from './MyStem.js';
 import { MySphere } from './MySphere.js';
 
 export class MyFlower extends CGFobject {
-	constructor(scene, lenghtPetals=1, numPetals=7, colorPetals=[2, 0, 1], radiumReceptacle=1, colorReceptacle=[0, 1, 1], radiumStem=0.1, heightStem=6, coloStem=[0, 5, 0]) {
+	constructor(scene, flowerRadius=2, numPetals=7, petalsColor=[2, 0, 1], receptacleRadius=1, receptacleColor=[0, 1, 1], stemRadius=0.1, numSubStem=6, stemColor=[0, 5, 0], leafColor=[0, 1, 0]) {
 		super(scene);
         // Parameters:
-        this.numPetals = numPetals; 
-        this.radiumStem = radiumStem;
-        this.lenghtPetals = lenghtPetals;
-        this.coloStem = coloStem;
-        this.colorReceptacle = colorReceptacle;
-        this.colorPetals = colorPetals;
-        this.heightStem = heightStem;
+        this.flowerRadius = flowerRadius;
+        this.numPetals = numPetals;
+        this.petalsColor = petalsColor;
+        this.receptacleRadius = receptacleRadius;
+        this.colorReceptacle = receptacleColor;
+        this.stemRadius = stemRadius;
+        this.numSubStem = numSubStem;
+        this.stemColor = stemColor;
+        this.leafColor = leafColor;
+        this.lenghtPetals = flowerRadius - receptacleRadius;
 
         // Objects:
         var stacks = 20;
         var slices = 20;
-        this.receptacle = new MySphere(scene, radiumReceptacle, slices, stacks, false);
+        this.receptacle = new MySphere(scene, this.receptacleRadius, slices, stacks, false);
         this.petal = new MyPetal(scene, this.lenghtPetals);
-        this.stem = new MyStem(scene, slices, stacks, this.radiumStem, this.heightStem);  
+        this.stem = new MyStem(scene, slices, stacks, this.stemRadius, this.numSubStem, this.stemColor, this.leafColor);  
 	}
 
     
