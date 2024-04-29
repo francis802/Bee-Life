@@ -100,6 +100,7 @@ export class MyStem extends CGFobject {
                     this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ);
                     this.scene.scale(0.4,0.4,0.4);
                     this.scene.rotate(Math.PI,Math.PI,Math.PI*3/4,0);
+                    this.scene.setDiffuse(this.leafColor[0],this.leafColor[1],this.leafColor[2],this.leafColor[3]);
                     this.leaf.display();
                     this.scene.popMatrix();
                 }
@@ -108,7 +109,7 @@ export class MyStem extends CGFobject {
                 this.scene.rotate(-Math.PI/2-this.angles[i],1,0,0);
                 var height1 = this.heights[i];
                 this.scene.scale(this.radiumStem,this.radiumStem,height1);
-                this.scene.setDiffuse(0, 5, 0, 5);
+                this.scene.setDiffuse(this.stemColor[0],this.stemColor[1],this.stemColor[2],this.stemColor[3]);
                 this.cylinder.display();
                 this.scene.popMatrix();
                 totalHeight += height1*Math.cos(this.angles[i]) - adjustY;
@@ -119,6 +120,7 @@ export class MyStem extends CGFobject {
                     this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ - this.heights[i-1]*Math.sin(this.angles[i-1]));
                     this.scene.scale(0.4,0.4,0.4);
                     this.scene.rotate(0,-Math.PI/2,Math.PI*3/4,0);
+                    this.scene.setDiffuse(this.leafColor[0],this.leafColor[1],this.leafColor[2],this.leafColor[3]);
                     this.leaf.display();
                     this.scene.popMatrix();
                 }
@@ -129,57 +131,12 @@ export class MyStem extends CGFobject {
                 this.scene.translate(0,totalHeight,deltaZ + this.radiumStem - adjustZ);
                 this.scene.rotate(Math.PI/2+this.angles[i],1,0,0);
                 this.scene.scale(this.radiumStem,this.radiumStem,height2);
-                this.scene.setDiffuse(0, 5, 0, 5);
+                this.scene.setDiffuse(this.stemColor[0],this.stemColor[1],this.stemColor[2],this.stemColor[3]);
                 this.cylinder.display();
                 this.scene.popMatrix();
             }
             i++;
             
         }
-        /*
-        var adjustY = this.radiumStem*Math.sin(this.angleStem);
-        var adjustZ = this.radiumStem*Math.cos(this.angleStem);
-        var height1 = 0;
-
-        var i = 0;
-        var totalHeight = 0;
-        if (this.heightStem%2 == 1){
-            this.scene.pushMatrix();
-            this.scene.rotate(-Math.PI/2,1,0,0);
-            height1 = this.heights[i];
-            this.scene.scale(this.radiumStem,this.radiumStem,height1);
-            this.scene.setDiffuse(0, 5, 0, 5);
-            this.cylinder.display();
-            this.scene.popMatrix();
-            i = 1;
-        }
-        while (i < this.heightStem){
-            // Pos curve of the stem
-            this.scene.pushMatrix();
-            
-            if(i == 1) {
-                totalHeight += height1 - adjustY;
-            }
-            this.scene.translate(0,totalHeight,this.radiumStem - adjustZ);
-            this.scene.rotate(-Math.PI/2-this.angleStem,1,0,0);
-            var height2 = this.heights[i];
-            this.scene.scale(this.radiumStem,this.radiumStem,height2);
-            this.scene.setDiffuse(0, 5, 0, 5);
-            this.cylinder.display();
-            this.scene.popMatrix();
-
-            
-            // Neg curve of the stem
-            this.scene.pushMatrix();
-            totalHeight += 2*(height2*Math.cos(this.angleStem) - adjustY);
-            this.scene.translate(0,totalHeight, this.radiumStem - adjustZ);
-            this.scene.rotate(Math.PI/2+this.angleStem,1,0,0);
-            this.scene.scale(this.radiumStem,this.radiumStem,height2);
-            this.scene.setDiffuse(0, 5, 0, 5);
-            this.cylinder.display();
-            this.scene.popMatrix();
-            i += 2;
-        }
-        */
     }
 }
