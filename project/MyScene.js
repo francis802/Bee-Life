@@ -8,6 +8,7 @@ import { MyCylinder } from "./MyCylinder.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyLeaf } from "./MyLeaf.js";
 import { MyRock } from "./MyRock.js";
+import { MySphere } from "./MySphere.js";
 
 
 /**
@@ -36,6 +37,7 @@ export class MyScene extends CGFscene {
     //------ Textures
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
     this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
+    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
 
 
     //Initialize scene objects
@@ -100,13 +102,19 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
     
     this.pushMatrix();
-    //this.rock.display();
+    this.rockTexture.bind();
+    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+    this.rock.display();
+    this.popMatrix();
+
+    this.pushMatrix();
     this.flower.display();
     this.garden.display();
     this.popMatrix();

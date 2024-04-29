@@ -16,7 +16,8 @@ export class MyPanorama extends CGFobject {
 
     display() {
         this.scene.pushMatrix();
-        this.scene.panorama_texture.bind();
+        this.panorama_texture.bind();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.sphere.display();
         this.scene.popMatrix();
       }
