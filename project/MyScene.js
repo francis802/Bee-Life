@@ -7,6 +7,7 @@ import { MyPetal} from "./MyPetal.js";
 import { MyCylinder } from "./MyCylinder.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyLeaf } from "./MyLeaf.js";
+import { MyRock } from "./MyRock.js";
 
 
 /**
@@ -43,6 +44,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, this.panorama_texture);
     this.flower = new MyFlower(this);
     this.leaf = new MyLeaf(this);
+    this.rock = new MyRock(this, 1, 20, 20);
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
@@ -104,7 +106,7 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
     
     this.pushMatrix();
-    this.flower.display();
+    this.rock.display();
     this.garden.display();
     this.popMatrix();
 
