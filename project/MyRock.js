@@ -36,7 +36,7 @@ export class MyRock extends CGFobject {
                 const z = Math.sin(angle_xz) * Math.cos(angle_xy);
                 const y = Math.sin(angle_xy);
 
-                this.vertices.push(this.radius * (x + Math.random()* this.radius/4), this.radius * (y + Math.random()* this.radius/4), this.radius * (z + Math.random()* this.radius/4));
+                this.vertices.push(this.radius * (x + Math.random()* this.radius/10), this.radius * (y + Math.random()* this.radius/10), this.radius * (z + Math.random()* this.radius/10));
                 this.normals.push(x, y, z);
                 this.texCoords.push(i / this.slices, 1 - j / (this.stacks * 2));
 
