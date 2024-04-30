@@ -41,6 +41,8 @@ export class MyScene extends CGFscene {
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
 
 
+    this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
+
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
@@ -65,6 +67,8 @@ export class MyScene extends CGFscene {
     this.appearance = new CGFappearance(this);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
+  
 
     this.globalAmbientLight = 0.3;
   }

@@ -1,4 +1,4 @@
-import {CGFobject} from '../lib/CGF.js';
+import {CGFtexture, CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MyPetal } from './MyPetal.js';
 import { MyStem } from './MyStem.js';
 import { MySphere } from './MySphere.js';
@@ -18,12 +18,30 @@ export class MyFlower extends CGFobject {
         this.leafColor = leafColor;
         this.lenghtPetals = flowerRadius - receptacleRadius;
 
-        // Objects:
+        
         var stacks = 20;
         var slices = 20;
+
+        // Receptacle:
         this.receptacle = new MySphere(scene, this.receptacleRadius, slices, stacks, false);
+        this.receptacleMaterial = new CGFappearance(scene);
+        this.receptacleTexture = new CGFtexture(scene, "images/receptacle_texture.jpg");
+        this.receptacleMaterial.setTexture(this.receptacleTexture);
+        this.receptacleMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.receptacleMaterial.setDiffuse(this.receptacleColor[0],this.receptacleColor[1],this.receptacleColor[2], this.receptacleColor[3]);
+        
+        // Petals:
         this.petal = new MyPetal(scene, this.lenghtPetals);
+        this.petalMaterial = new CGFappearance(scene);
+        this.petalTexture = new CGFtexture(scene, "images/white_petal.jpg");
+        this.petalMaterial.setTexture(this.petalTexture);
+        this.petalMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.petalMaterial.setDiffuse(this.petalsColor[0], this.petalsColor[1], this.petalsColor[2], this.petalsColor[3]);
+        
+        // Stem:
         this.stem = new MyStem(scene, slices, stacks, this.stemRadius, this.numSubStem, this.stemColor, this.leafColor);  
+        this.stemMaterial = new CGFappearance(scene);
+        this.stemMaterial.setDiffuse(this.stemColor[0],this.stemColor[1],this.stemColor[2], this.stemColor[3]);
 	}
 
     
@@ -31,6 +49,7 @@ export class MyFlower extends CGFobject {
         
         // Stem:
         this.scene.pushMatrix(); 
+        this.stemMaterial.apply();
         this.stem.display();
         this.scene.popMatrix();
        
@@ -42,7 +61,7 @@ export class MyFlower extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(0,stemHeight+this.receptacle.radius,0);
         this.scene.rotate(-Math.PI/2,1,0,0);
-        this.scene.setDiffuse(this.receptacleColor[0],this.receptacleColor[1],this.receptacleColor[2], this.receptacleColor[3]);
+        this.receptacleMaterial.apply();
         this.receptacle.display();
         this.scene.popMatrix();
 
@@ -71,7 +90,7 @@ export class MyFlower extends CGFobject {
         this.scene.translate(x, y+stemHeight+this.receptacle.radius, startY+0.5);
         this.scene.rotate(Math.PI, 0, 0, 0); // Orientar a pétala para cima
         this.scene.rotate(orientationAngle, 0, 0, 1); // Orientar a pétala para que uma das pontas aponte para o centro da circunferência
-        this.scene.setDiffuse(this.petalsColor[0], this.petalsColor[1], this.petalsColor[2], this.petalsColor[3]);
+        this.petalMaterial.apply();
         this.petal.display();
         this.scene.popMatrix();
     }
