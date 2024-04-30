@@ -37,7 +37,7 @@ export class MyTriangle extends CGFobject {
 			
 		]
 
-		this.textCoords = [
+		this.texCoords = [
 			0, 0,
 			1, 0,
 			0, 1,

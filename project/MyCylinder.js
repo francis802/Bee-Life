@@ -17,6 +17,7 @@ export class MyCylinder extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
         
         for (let z = 0 ; z <= this.stacks ; z += 1) {
             this.vertices.push(1, 0, z / this.stacks);
@@ -33,6 +34,7 @@ export class MyCylinder extends CGFobject {
             if (i != this.slices) {    
                 this.vertices.push(x, y, 0);
                 this.normals.push(x / vector_size, y / vector_size, 0);
+                this.texCoords.push(1 - i / this.slices, 1);
             }
 
             for (let j = 1 ; j <= this.stacks ; j++) {
@@ -42,7 +44,7 @@ export class MyCylinder extends CGFobject {
                     let z = j / this.stacks;
                     this.vertices.push(x, y, z);
                     this.normals.push(x / vector_size, y / vector_size, 0);
-                    
+                    this.texCoords.push(1 - i / this.slices, 1 - j / this.stacks);
                     let points = this.vertices.length / 3;
                     let indexC = points - 2;
                     let indexD = points - 1;
