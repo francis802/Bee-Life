@@ -32,10 +32,10 @@ export class MyGarden extends CGFobject {
                 var numPetals = this.randomInt(5, 10);
                 var stemRadius = this.randomMinMax(0.1, 0.3);
                 var numSubStem = this.randomInt(3, 8);
-                let leafColors = [[0, 1, 0, 1], [0, 1, 1, 1], [1, 1, 0, 1]];
-                let stemColors = [[0, 5, 0, 1], [0, 5, 1, 1], [1, 5, 0, 1]];
-                let petalsColors = [[2, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1], [4, 0, 0, 1]];
-                let receptacleColors = [[1, 1, 1, 1], [1, 1, 0, 1], [2, 0, 0, 1], [1, 0, 1, 1]];
+                let leafColors = [[0, 0.5, 0, 1], [0, 1, 0.2, 1], [0.8, 0.7, 0, 1]];
+                let stemColors = [[0, 0.9, 0, 1], [0, 0.8, 0.6, 1], [0.6, 1, 0, 1]];
+                let petalsColors = [[1, 0.3, 1, 1], [0, 0.6, 1, 1], [0.1, 0, 1, 1], [0.8, 0.5, 0, 1], [1, 0.5, 0, 1], [0.3, 0.3, 0.3, 1]] ;
+                let receptacleColors = [[0.8, 0.8, 0.8, 1], [0.3, 0.7, 0, 1], [1, 0.1, 0.2, 1], [0.8, 0.15, 0.9, 1]];
 
                 this.flowers.push(new MyFlower(this.scene, flowerRadius, numPetals, petalsColors[this.randomInt(0,3)], receptacleRadius, receptacleColors[this.randomInt(0,3)], stemRadius, numSubStem, stemColors[this.randomInt(0,2)], leafColors[this.randomInt(0,2)]));
             }
