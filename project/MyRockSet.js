@@ -57,6 +57,7 @@ export class MyRockSet extends CGFobject {
                 this.scene.translate(originPile[0] + Math.floor(j/baseSize)*3, originPile[1], originPile[2] + (j%baseSize)*3);
                 this.scene.scale(stoneScaleLevel[j][0], stoneScaleLevel[j][1], stoneScaleLevel[j][2]);
                 this.scene.rotate(stoneRotationLevel[j], 0, 1, 0);
+                this.scene.setDiffuse(0.5, 0.5, 0.5, 1);
                 stoneLevel[j].display();
                 this.scene.popMatrix();
             }
