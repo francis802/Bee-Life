@@ -23,7 +23,7 @@ export class MyStem extends CGFobject {
 
     createRandomStem(){
         var minSubStem = 1;
-        var maxSubStem = 3.5;
+        var maxSubStem = 5;
         var minAngle = 0;
         var maxAngle = Math.PI/6;
         var sumAngles = 0;
