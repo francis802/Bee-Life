@@ -48,8 +48,8 @@ export class MyGarden extends CGFobject {
             for (let j = 0; j < this.nflowers; j++){
                 this.scene.pushMatrix();
                 this.scene.translate(0, -100, 0);
-                this.scene.rotate(this.flowers_angles[i][j], 0, 1, 0);
                 this.scene.translate(i*20,0,j*20);
+                this.scene.rotate(this.flowers_angles[i][j], 0, 1, 0);
                 this.flowers[i*this.nflowers + j].display();
                 this.scene.popMatrix();
             }

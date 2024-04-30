@@ -9,6 +9,7 @@ import { MyGarden } from "./MyGarden.js";
 import { MyLeaf } from "./MyLeaf.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
+import { MyRockSet } from "./MyRockSet.js";
 
 
 /**
@@ -50,6 +51,7 @@ export class MyScene extends CGFscene {
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
+    this.rockPile = new MyRockSet(this, this.rockTexture);
     
 
     //Objects connected to MyInterface
@@ -107,16 +109,11 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
-    
-    this.pushMatrix();
-    this.rockTexture.bind();
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-    this.rock.display();
-    this.popMatrix();
 
     this.pushMatrix();
     this.flower.display();
     this.garden.display();
+    this.rockPile.display();
     this.popMatrix();
 
     
