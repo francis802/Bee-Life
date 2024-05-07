@@ -42,6 +42,9 @@ export class MyFlower extends CGFobject {
         // Stem:
         this.stem = new MyStem(scene, slices, stacks, this.stemRadius, this.numSubStem, this.stemColor, this.leafColor);  
         this.stemMaterial = new CGFappearance(scene);
+        this.stemTexture = new CGFtexture(scene, "images/stem_texture.jpg");
+        this.stemMaterial.setTexture(this.stemTexture);
+        this.stemMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.stemMaterial.setDiffuse(this.stemColor[0],this.stemColor[1],this.stemColor[2], this.stemColor[3]);
 
         // Pollen:
