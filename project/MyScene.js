@@ -10,7 +10,11 @@ import { MyLeaf } from "./MyLeaf.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyRockSet } from "./MyRockSet.js";
+
+import { MyBee } from "./MyBee.js";
+
 import { MyHive } from "./MyHive.js";
+
 
 
 /**
@@ -35,6 +39,8 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
+    this.gl.enable(this.gl.BLEND)
 
     //------ Textures
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
@@ -56,7 +62,11 @@ export class MyScene extends CGFscene {
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
     this.rockPile = new MyRockSet(this, this.rockTexture);
+
+    this.bee = new MyBee(this);
+
     this.hive = new MyHive(this, 1, 20, 20);
+
     
 
     //Objects connected to MyInterface
@@ -111,6 +121,8 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    
+
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
@@ -132,6 +144,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.garden.display();
     this.rockPile.display();
+    
     this.popMatrix();
 
     
@@ -154,6 +167,9 @@ export class MyScene extends CGFscene {
 
    
     //this.sphere.display();
+    this.pushMatrix();
+    this.bee.display();
+    this.popMatrix();
 
 
     // ---- END Primitive drawing section
