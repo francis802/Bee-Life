@@ -10,6 +10,7 @@ import { MyLeaf } from "./MyLeaf.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyRockSet } from "./MyRockSet.js";
+import { MyHive } from "./MyHive.js";
 
 
 /**
@@ -39,6 +40,7 @@ export class MyScene extends CGFscene {
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
     this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+    this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
 
 
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
@@ -54,6 +56,7 @@ export class MyScene extends CGFscene {
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
     this.rockPile = new MyRockSet(this, this.rockTexture);
+    this.hive = new MyHive(this, 1, 20, 20);
     
 
     //Objects connected to MyInterface
@@ -116,6 +119,17 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.flower.display();
+    this.popMatrix();
+    this.pushMatrix();
+
+    this.hiveMaterial = new CGFappearance(this);
+    this.hiveMaterial.setTexture(this.hiveTexture);
+    this.hiveMaterial.setTextureWrap('REPEAT', 'REPEAT');
+    this.hiveMaterial.apply();
+    this.hive.display();
+    this.popMatrix();
+
+    this.pushMatrix();
     this.garden.display();
     this.rockPile.display();
     this.popMatrix();
