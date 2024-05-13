@@ -2,6 +2,7 @@ import {CGFtexture, CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MyPetal } from './MyPetal.js';
 import { MyStem } from './MyStem.js';
 import { MySphere } from './MySphere.js';
+import { MyPollen } from './MyPollen.js';
 
 export class MyFlower extends CGFobject {
 	constructor(scene, flowerRadius=2, numPetals=7, petalsColor=[2, 0, 1, 1], receptacleRadius=1, receptacleColor=[0, 1, 1, 1], stemRadius=0.1, numSubStem=6, stemColor=[0, 5, 0, 1], leafColor=[0, 1, 0, 1]) {
@@ -45,6 +46,15 @@ export class MyFlower extends CGFobject {
         this.stemMaterial.setTexture(this.stemTexture);
         this.stemMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.stemMaterial.setDiffuse(this.stemColor[0],this.stemColor[1],this.stemColor[2], this.stemColor[3]);
+
+        // Pollen:
+        this.pollen = new MyPollen(scene, 0.3, 20, 20, 2, 1);
+        
+        this.pollenMaterial = new CGFappearance(scene);
+        this.pollenTexture = new CGFtexture(scene, "images/polen.jpg");
+        this.pollenMaterial.setTexture(this.pollenTexture);
+        this.pollenMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.pollenMaterial.setDiffuse(1, 1, 1, 1);
 	}
 
     
@@ -97,6 +107,13 @@ export class MyFlower extends CGFobject {
         this.petal.display();
         this.scene.popMatrix();
     }
+
+    // Pollen:
+    this.scene.pushMatrix();
+    this.scene.translate(0, stemHeight+this.receptacle.radius, this.receptacle.radius);
+    this.pollenMaterial.apply();
+    this.pollen.display();
+    this.scene.popMatrix();
     
     
     }
