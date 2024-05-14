@@ -48,16 +48,16 @@ export class MyUnitCube extends CGFobject {
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			// Back face
-			1, 0, 3,
-			1, 3, 2,
+			3, 0, 1,
+			2, 3, 1,
 			
 			// Front face
 			5, 4, 7,
 			5, 7, 6,
 
 			// Left face
-			11, 10, 8,
-			11, 8, 9,
+			8, 10, 11,
+			9, 8, 11,
 
 			// Right face
 			14, 15, 13,
@@ -68,8 +68,8 @@ export class MyUnitCube extends CGFobject {
 			16, 19, 17,
 			
 			// Down face
-			20, 22, 23,
-			20, 23, 21
+			23, 22, 20,
+			21, 23, 20
 
 		];
 
@@ -109,6 +109,38 @@ export class MyUnitCube extends CGFobject {
 			0, -1, 0,
 			0, -1, 0,
 			0, -1, 0,
+		];
+
+		this.texCoords = [
+			0, 1, // 0
+			1, 1, // 1
+			0, 0, // 2
+			1, 0, // 3
+
+			0, 1, // 4
+			1, 1, // 5
+			0, 0, // 6
+			1, 0, // 7
+
+			0, 1, // 8
+			1, 1, // 9
+			0, 0, // 10
+			1, 0, // 11
+
+			0, 1, // 12
+			1, 1, // 13
+			0, 0, // 14
+			1, 0, // 15
+
+			0, 1, // 16
+			1, 1, // 17
+			0, 0, // 18
+			1, 0, // 19
+
+			0, 1, // 20
+			1, 1, // 21
+			0, 0, // 22
+			1, 0, // 23
 		];
 
 		//The defined indices (and corresponding vertices)

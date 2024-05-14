@@ -41,6 +41,7 @@ export class MyScene extends CGFscene {
     this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
+    this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
 
 
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
@@ -121,11 +122,6 @@ export class MyScene extends CGFscene {
     this.flower.display();
     this.popMatrix();
     this.pushMatrix();
-
-    this.hiveMaterial = new CGFappearance(this);
-    this.hiveMaterial.setTexture(this.hiveTexture);
-    this.hiveMaterial.setTextureWrap('REPEAT', 'REPEAT');
-    this.hiveMaterial.apply();
     this.hive.display();
     this.popMatrix();
 
