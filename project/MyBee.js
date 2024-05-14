@@ -13,8 +13,6 @@ export class MyBee extends CGFobject {
         this.upperBodyMaterial.setTexture(this.upperBodyTexture);
         this.upperBodyMaterial.setTextureWrap('REPEAT', 'REPEAT');
 
-        
-
         // Abdomen:
         this.abdomenMaterial = new CGFappearance(scene);
         this.abdomenTexture = new CGFtexture(scene, "images/bee_body.jpg");
@@ -37,10 +35,45 @@ export class MyBee extends CGFobject {
         this.eyesMaterial.setTexture(this.eyesTexture);
         this.eyesMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.eyesMaterial.setDiffuse(0,0,0, 0);
+
+        // Animation:
+        this.speed = 1;
+        this.wingsAngle = 0;
+        this.wingsMovDown = true;
+        this.position = [0, 0, 0];
+        this.defaultPosition = [0, 0, 0];
+
+
 	}
 
+    update(time, counterTime){
+        // Body oscillation:
+        if (counterTime >= 10 && counterTime < 20){
+            this.position[1] -= 0.1;
+            console.log(this.position[1]);
+        } 
+        else if (counterTime <10){
+            this.position[1] += 0.1;
+            console.log(this.position[1]);
+        } 
+
+        // Wing oscillation:
+        if (this.wingsMovDown){
+            this.wingsAngle -= Math.PI/4 ;
+            this.wingsMovDown = false;
+        } else {
+            this.wingsAngle += Math.PI/4 ;
+            this.wingsMovDown = true;
+        }
+        
+       
+        
+    }
     
 	display(){ 
+        // Movement:
+        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        
         
         // Head:
         this.buildHead();
@@ -68,8 +101,17 @@ export class MyBee extends CGFobject {
         this.buildlegs();
         
         // Wings:
-        this.buildWings();
+        this.scene.pushMatrix();
+        this.scene.rotate(this.wingsAngle,1,0,0)
+        this.buildRightWings();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.rotate(-this.wingsAngle,1,0,0)
+        this.buildLeftWings();
+        this.scene.popMatrix();
         
+
     }
 
     buildHead(){
@@ -140,7 +182,10 @@ export class MyBee extends CGFobject {
 
     }
 
-    buildWings(){
+
+
+
+    buildLeftWings(){
         // Asa maior esquerda:
         this.scene.pushMatrix();
         this.scene.translate(0.4, 0.5, -2);
@@ -160,7 +205,10 @@ export class MyBee extends CGFobject {
         this.wingsMaterial.apply();
         this.sphere.display();
         this.scene.popMatrix()
+    }
 
+    buildRightWings(){
+        
         // Asa maior direita:
         this.scene.pushMatrix();
         this.scene.translate(0.4, 0.5, 2);
@@ -280,5 +328,7 @@ export class MyBee extends CGFobject {
          this.scene.popMatrix();
        
     }
+
+   
 }
 

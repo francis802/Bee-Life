@@ -39,8 +39,9 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
-    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
-    this.gl.enable(this.gl.BLEND)
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    this.gl.enable(this.gl.BLEND);
+    this.setUpdatePeriod(50);
 
     //------ Textures
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
@@ -84,6 +85,14 @@ export class MyScene extends CGFscene {
   
 
     this.globalAmbientLight = 0.3;
+
+
+
+    // Update variables:
+    this.counterTime = 0;
+    this.runTime = 0;
+    this.speed = 1;
+
   }
 
   initLights() {
@@ -173,5 +182,16 @@ export class MyScene extends CGFscene {
 
 
     // ---- END Primitive drawing section
+  }
+
+  update(time){
+    this.counterTime = (this.counterTime + 1)%21;
+
+    if(this.counterTime % 2 == 0){
+      this.bee.update(time, this.counterTime);
+    }
+
+    
+    
   }
 }
