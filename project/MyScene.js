@@ -63,7 +63,8 @@ export class MyScene extends CGFscene {
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
-    this.rockPile = new MyRockSet(this, 10);
+    this.hiveRockBase = 7;
+    this.rockPile = new MyRockSet(this, this.hiveRockBase);
 
     this.bee = new MyBee(this);
 
@@ -143,7 +144,7 @@ export class MyScene extends CGFscene {
     this.flower.display();
     this.popMatrix();
     this.pushMatrix();
-    this.translate(-36.5, -86, -36.5)
+    this.translate(-51 + 1.5*this.hiveRockBase, -100 + 1.5*this.hiveRockBase, -51 + 1.5*this.hiveRockBase)
     this.rotate(Math.PI, 0, 1, 0);
     this.hive.display();
     this.popMatrix();
