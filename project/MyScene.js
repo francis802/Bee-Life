@@ -63,7 +63,7 @@ export class MyScene extends CGFscene {
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
-    this.rockPile = new MyRockSet(this, this.rockTexture);
+    this.rockPile = new MyRockSet(this, 10);
 
     this.bee = new MyBee(this);
 
@@ -143,6 +143,8 @@ export class MyScene extends CGFscene {
     this.flower.display();
     this.popMatrix();
     this.pushMatrix();
+    this.translate(-36.5, -86, -36.5)
+    this.rotate(Math.PI, 0, 1, 0);
     this.hive.display();
     this.popMatrix();
 
@@ -172,9 +174,12 @@ export class MyScene extends CGFscene {
 
    
     //this.sphere.display();
+    
     this.pushMatrix();
+    this.translate(0, 0, -7);
     this.bee.display();
     this.popMatrix();
+    
 
 
     // ---- END Primitive drawing section

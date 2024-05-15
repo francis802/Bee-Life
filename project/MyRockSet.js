@@ -7,9 +7,10 @@ import { MyRock } from './MyRock.js';
  * @param scene - Reference to MyScene object
  */
 export class MyRockSet extends CGFobject {
-    constructor(scene, rockTexture) {
+    constructor(scene, baseSize) {
         super(scene);
-        this.rockTexture = rockTexture;
+        this.rockTexture = this.scene.rockTexture;
+        this.baseSize = baseSize;
         this.stones = [];
         this.stoneScales = [];
         this.stoneRotations = [];
@@ -25,7 +26,7 @@ export class MyRockSet extends CGFobject {
     }
 
     createRockPile(){
-        var baseSize = 5;
+        var baseSize = this.baseSize;
         while (baseSize > 0){
             var stoneLevel = [];
             var stoneScaleLevel = [];
