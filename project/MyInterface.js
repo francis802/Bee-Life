@@ -21,10 +21,43 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
         this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
 
-        //Slider element in GUI
-        this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
-
         this.gui.add(this.scene, 'globalAmbientLight', 0.3, 1.0).name('Global Ambient Light');
+
+        this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor');
+
+        this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Scale Factor');
+
+
+
+        this.initKeys();
+
         return true;
     }
+
+    initKeys() {
+        // create reference from the scene to the GUI
+        this.scene.gui=this;
+        // disable the processKeyboard function
+        this.processKeyboard=function(){};
+        // create a named array to store which keys are being pressed
+        this.activeKeys={};
+        
+    }
+
+    processKeyDown(event) {
+        // called when a key is pressed down
+        // mark it as active in the array
+        this.activeKeys[event.code]=true;
+        
+    };
+
+    isKeyPressed(keyCode) {
+        // returns true if a key is marked as pressed, false otherwise
+        return this.activeKeys[keyCode] || false;
+    }
+
+    processKeyUp(event) {
+        // called when a key is released, mark it as inactive in the array
+        this.activeKeys[event.code]=false;
+    };
 }

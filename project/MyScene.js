@@ -91,6 +91,8 @@ export class MyScene extends CGFscene {
   
 
     this.globalAmbientLight = 0.3;
+    this.speedFactor = 0.1;
+    this.scaleFactor = 1;
 
 
 
@@ -113,7 +115,7 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(50, 100, 50),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -136,6 +138,7 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+  
     
 
 
@@ -182,23 +185,54 @@ export class MyScene extends CGFscene {
     //this.sphere.display();
     
     this.pushMatrix();
-    this.translate(0, 0, -7);
+    this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
     this.bee.display();
     this.popMatrix();
-    
+    //this.camera.setTarget(vec3.fromValues(this.bee.position[0], this.bee.position[1], this.bee.position[2]))
 
 
     // ---- END Primitive drawing section
   }
 
+  checkKeys(){
+    var output = [0,0,0,0,0];
+    if (this.gui.isKeyPressed("KeyW")){
+        output[0]=1;
+    }
+    if (this.gui.isKeyPressed("KeyS")){
+        output[0]=-1;
+    }
+    if (this.gui.isKeyPressed("KeyA")){
+        output[1]=1;
+    }
+    if (this.gui.isKeyPressed("KeyD")){
+        output[1]=-1;
+    }
+    if (this.gui.isKeyPressed("KeyR")){
+        output[2]=1;
+    }
+    
+    //console.log(output);
+    
+    return output;
+  }
+
   update(time){
     this.counterTime = (this.counterTime + 1)%21;
 
+    var movementInfo = this.checkKeys();
+
     if(this.counterTime % 2 == 0){
-      this.bee.update(time, this.counterTime);
+      this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
+      
     }
+
+
 
     
     
+    
   }
+
+  
 }
