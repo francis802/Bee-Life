@@ -27,8 +27,8 @@ export class MyGarden extends CGFobject {
             var row = [];
             for (let j = 0; j < this.nflowers; j++){
                 row.push(Math.random() * 360);
-                var receptacleRadius = this.randomMinMax(1, 2);
-                var flowerRadius = this.randomMinMax(receptacleRadius + 1, receptacleRadius + 4);
+                var receptacleRadius = this.randomMinMax(1.5, 2);
+                var flowerRadius = this.randomMinMax(receptacleRadius + 1, receptacleRadius + 2);
                 var numPetals = this.randomInt(5, 10);
                 var stemRadius = this.randomMinMax(0.1, 0.3);
                 var numSubStem = this.randomInt(3, 8);

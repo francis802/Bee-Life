@@ -10,7 +10,11 @@ import { MyLeaf } from "./MyLeaf.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyRockSet } from "./MyRockSet.js";
+
 import { MyBee } from "./MyBee.js";
+
+import { MyHive } from "./MyHive.js";
+
 
 
 /**
@@ -43,6 +47,8 @@ export class MyScene extends CGFscene {
     this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
     this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+    this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
+    this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
 
 
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
@@ -57,8 +63,13 @@ export class MyScene extends CGFscene {
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 5);
-    this.rockPile = new MyRockSet(this, this.rockTexture);
+    this.hiveRockBase = 7;
+    this.rockPile = new MyRockSet(this, this.hiveRockBase);
+
     this.bee = new MyBee(this);
+
+    this.hive = new MyHive(this, 1, 20, 20);
+
     
 
     //Objects connected to MyInterface
@@ -133,6 +144,15 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
+    this.flower.display();
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(-51 + 1.5*this.hiveRockBase, -100 + 1.5*this.hiveRockBase, -51 + 1.5*this.hiveRockBase)
+    this.rotate(Math.PI, 0, 1, 0);
+    this.hive.display();
+    this.popMatrix();
+
+    this.pushMatrix();
     this.garden.display();
     this.rockPile.display();
     
@@ -158,6 +178,7 @@ export class MyScene extends CGFscene {
 
    
     //this.sphere.display();
+    
     this.pushMatrix();
     this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
     this.bee.display();

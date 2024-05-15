@@ -7,9 +7,10 @@ import { MyRock } from './MyRock.js';
  * @param scene - Reference to MyScene object
  */
 export class MyRockSet extends CGFobject {
-    constructor(scene, rockTexture) {
+    constructor(scene, baseSize) {
         super(scene);
-        this.rockTexture = rockTexture;
+        this.rockTexture = this.scene.rockTexture;
+        this.baseSize = baseSize;
         this.stones = [];
         this.stoneScales = [];
         this.stoneRotations = [];
@@ -25,14 +26,14 @@ export class MyRockSet extends CGFobject {
     }
 
     createRockPile(){
-        var baseSize = 5;
+        var baseSize = this.baseSize;
         while (baseSize > 0){
             var stoneLevel = [];
             var stoneScaleLevel = [];
             var stoneRotationLevel = [];
             for (let i = 0; i < baseSize*baseSize; i++){
                 var stoneSize = this.randomMinMax(1, 2);
-                stoneScaleLevel.push([this.randomMinMax(0.5, 1.5), this.randomMinMax(0.5, 1.5), this.randomMinMax(0.5, 1.5)]);
+                stoneScaleLevel.push([this.randomMinMax(0.5, 1.5), this.randomMinMax(0.5, 0.8), this.randomMinMax(0.5, 1.5)]);
                 stoneRotationLevel.push(this.randomMinMax(0, 2*Math.PI));
                 stoneLevel.push(new MyRock(this.scene, stoneSize, 20, 20));
             }
@@ -61,7 +62,7 @@ export class MyRockSet extends CGFobject {
                 stoneLevel[j].display();
                 this.scene.popMatrix();
             }
-            originPile = [originPile[0] + 1.5, originPile[1] + 3, originPile[2] + 1.5];
+            originPile = [originPile[0] + 1.5, originPile[1] + 1.5, originPile[2] + 1.5];
         }
     }
 }

@@ -1,8 +1,10 @@
 import { CGFobject } from '../../lib/CGF.js';
 
-export class MyRock extends CGFobject {
-    constructor(scene, radius, slices, stacks) {
+export class MyPollen extends CGFobject {
+    constructor(scene, radius, slices, stacks, north = 1, south = 1) {
         super(scene);
+        this.north = north;
+        this.south = south;
         this.radius = radius;
         this.slices = slices;
         this.stacks = stacks;
@@ -32,11 +34,12 @@ export class MyRock extends CGFobject {
 
             for (let j = 0; j <= this.stacks * 2; j++) {
                 const angle_xy = -Math.PI / 2 + (Math.PI * j) / (2 * this.stacks);
+                const y_factor = angle_xy >= 0 ? this.north : this.south;
                 const x = Math.cos(angle_xz) * Math.cos(angle_xy);
                 const z = Math.sin(angle_xz) * Math.cos(angle_xy);
                 const y = Math.sin(angle_xy);
 
-                this.vertices.push(this.radius * (x + Math.random()* this.radius/10), this.radius * (y + Math.random()* this.radius/10), this.radius * (z + Math.random()* this.radius/10));
+                this.vertices.push(this.radius * x, this.radius * y * y_factor, this.radius * z);
                 this.normals.push(x, y, z);
                 this.texCoords.push(i / this.slices, 1 - j / (this.stacks * 2));
 
