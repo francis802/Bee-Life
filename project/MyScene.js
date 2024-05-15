@@ -14,6 +14,8 @@ import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
 
 import { MyHive } from "./MyHive.js";
+import { MyGrass } from "./MyGrass.js";
+import { MyGrassField } from "./MyGrassField.js";
 
 
 
@@ -65,6 +67,8 @@ export class MyScene extends CGFscene {
     this.garden = new MyGarden(this, 5);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
+    this.grass = new MyGrass(this)
+    this.grassField = new MyGrassField(this);
 
     this.bee = new MyBee(this);
 
@@ -139,10 +143,11 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
-
+    
     this.pushMatrix();
-    this.flower.display();
+    this.grassField.display();
     this.popMatrix();
+    
     this.pushMatrix();
     this.translate(-51 + 1.5*this.hiveRockBase, -100 + 1.5*this.hiveRockBase, -51 + 1.5*this.hiveRockBase)
     this.rotate(Math.PI, 0, 1, 0);
