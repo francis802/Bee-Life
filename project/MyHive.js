@@ -37,8 +37,8 @@ export class MyHive extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.scale(1, 0.2, 0.8);
-        this.scene.translate(0, 9, -4);
+        this.scene.scale(2.5, 0.2, 1.6);
+        this.scene.translate(0, 9, -2);
         this.dirtMaterial.apply();
         this.balcony.display();
         this.scene.popMatrix();
