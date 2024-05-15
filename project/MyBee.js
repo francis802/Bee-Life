@@ -37,24 +37,26 @@ export class MyBee extends CGFobject {
         this.eyesMaterial.setDiffuse(0,0,0, 0);
 
         // Animation:
-        this.speed = 1;
         this.wingsAngle = 0;
         this.wingsMovDown = true;
-        this.position = [0, 0, 0];
-        this.defaultPosition = [0, 0, 0];
 
-
+        this.translation = [0, 0, 0];
+        this.orientation = 0; 
+        this.speed = 0;
+        this.velocity = [0,0,0];
+        this.defaultPosition = [0, -90, 0];
+        this.position = [0, -90, 0];
 	}
 
-    update(time, counterTime){
+    update(time, counterTime, movementInfo, speedFactor){
         // Body oscillation:
         if (counterTime >= 10 && counterTime < 20){
             this.position[1] -= 0.1;
-            console.log(this.position[1]);
+            
         } 
         else if (counterTime <10){
             this.position[1] += 0.1;
-            console.log(this.position[1]);
+            
         } 
 
         // Wing oscillation:
@@ -65,16 +67,52 @@ export class MyBee extends CGFobject {
             this.wingsAngle += Math.PI/4 ;
             this.wingsMovDown = true;
         }
+
+        // Movement:
+        if (movementInfo[0] != 0){   
+            this.accelerate(movementInfo[0], speedFactor);
+            
+        }
+    
+        if (movementInfo[1] != 0){
+            this.turn(movementInfo[1]);
+        }
         
-       
+        this.velocity[0] = this.speed*Math.cos(this.orientation);
+        this.velocity[2] = -this.speed*Math.sin(this.orientation);
+
+        this.position[0] += this.velocity[0]*(counterTime/5);
+        this.position[2] += this.velocity[2]*(counterTime/5);
+
+        // Reset position:
+        if (movementInfo[2]){
+            this.orientation = 0;
+            this.speed = 0;
+            console.log("Before position:", this.position);
+            this.position[0] = this.defaultPosition[0];
+            this.position[1] = this.defaultPosition[1];
+            this.position[2] = this.defaultPosition[2];
+            console.log("After position:", this.position);
+        }
         
+    }
+
+    turn(v){
+        this.orientation += v*Math.PI/4;
+    }
+    
+    accelerate(v, speedFactor){
+        this.speed += v*speedFactor;
     }
     
 	display(){ 
         // Movement:
-        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.translate(this.position[0] , this.position[1], this.position[2]);
+        this.scene.rotate(this.orientation, 0, 1, 0);
+            
         
         
+
         // Head:
         this.buildHead();
         
