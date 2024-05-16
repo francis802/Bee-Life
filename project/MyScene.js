@@ -17,7 +17,17 @@ import { MyHive } from "./MyHive.js";
 import { MyGrass } from "./MyGrass.js";
 import { MyGrassField } from "./MyGrassField.js";
 
+/**
+ * getStringFromUrl(url)
+ * Function to load a text file from a URL (used to display shader sources)
+ */
 
+function getStringFromUrl(url) {
+	var xmlHttpReq = new XMLHttpRequest();
+    xmlHttpReq.open("GET", url, false);
+    xmlHttpReq.send();
+    return xmlHttpReq.responseText;
+}
 
 /**
  * MyScene
@@ -51,9 +61,16 @@ export class MyScene extends CGFscene {
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
     this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
-
-
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
+
+    //------ Shaders
+    this.windShader = new CGFshader(this.gl, "shaders/wind.vert", "shaders/wind.frag");
+
+    this.shadersDiv = document.getElementById("shaders");
+		this.vShaderDiv = document.getElementById("vshader");
+		this.fShaderDiv = document.getElementById("fshader");
+
+    this.onShaderInit();
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -127,6 +144,15 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
 
+  onShaderInit() {
+		// update shader code
+		this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.windShader.vertexURL) + "</xmp>";
+		this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.windShader.fragmentURL) + "</xmp>";
+
+		// update scale factor
+		//this.onScaleFactorChanged(this.scaleFactor); ----> not needed???
+	}
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -138,6 +164,7 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    // this.setActiveShader(this.windShader); -- FIX THIS
   
     
 
@@ -226,6 +253,8 @@ export class MyScene extends CGFscene {
       this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
       
     }
+
+    this.windShader.setUniformsValues({ timeFactor: time / 100 % 100 });
 
 
 
