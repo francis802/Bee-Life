@@ -1,4 +1,4 @@
-import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
+import { CGFappearance, CGFobject, CGFshader, CGFtexture } from '../lib/CGF.js';
 import { MyFlower } from './MyFlower.js';
 import { MyGrass } from './MyGrass.js';
 /**
@@ -13,13 +13,15 @@ export class MyGrassField extends CGFobject {
         this.grass_angles = [];
         this.grass_heights = [];
         this.grassSize = 50;
-        this.createGarden();
+        this.createField();
 
         this.grassMaterial = new CGFappearance(scene);
         this.grassTexture = new CGFtexture(scene, "images/grass_texture.jpg");
         this.grassMaterial.setTexture(this.grassTexture);
         this.grassMaterial.setTextureWrap('MIRROR', 'MIRROR');
         this.grassMaterial.setDiffuse(0, 0.6, 0, 1);
+
+        this.windShader = new CGFshader(this.scene.gl, "shaders/wind.vert", "shaders/wind.frag");
     }
 
     randomMinMax(min, max){
@@ -30,7 +32,7 @@ export class MyGrassField extends CGFobject {
         return Math.floor(Math.random()*(max - min + 1) + min);
     }
 
-    createGarden(){
+    createField(){
         for (let i = 0; i < this.grassSize; i++){
             var row = [];
             var row_heights = [];
@@ -46,6 +48,7 @@ export class MyGrassField extends CGFobject {
     }
 
     display(){
+        this.scene.setActiveShader(this.windShader);
         for (let i = 0; i < this.grassSize/2; i++){
             for (let j = 0; j < this.grassSize/2; j++){
                 this.scene.pushMatrix();
@@ -58,5 +61,10 @@ export class MyGrassField extends CGFobject {
                 this.scene.popMatrix();
             }
         }
+        this.scene.setActiveShader(this.scene.defaultShader);
+    }
+
+    update(time) {
+        this.windShader.setUniformsValues({timeFactor: time / 50000});
     }
 }

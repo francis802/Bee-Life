@@ -56,26 +56,14 @@ export class MyScene extends CGFscene {
     this.setUpdatePeriod(50);
 
     //------ Textures
-    this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
-    this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
-    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
     this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
 
-    //------ Shaders
-    this.windShader = new CGFshader(this.gl, "shaders/wind.vert", "shaders/wind.frag");
-
-    //his.shadersDiv = document.getElementById("shaders");
-		//this.vShaderDiv = document.getElementById("vshader");
-		//this.fShaderDiv = document.getElementById("fshader");
-
-    //this.onShaderInit();
-
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.panorama = new MyPanorama(this, this.panorama_texture);
+    this.panorama = new MyPanorama(this);
     this.flower = new MyFlower(this);
     this.leaf = new MyLeaf(this);
     this.rock = new MyRock(this, 1, 20, 20);
@@ -144,15 +132,6 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
 
-  onShaderInit() {
-		// update shader code
-		this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.windShader.vertexURL) + "</xmp>";
-		this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.windShader.fragmentURL) + "</xmp>";
-
-		// update scale factor
-		//this.onScaleFactorChanged(this.scaleFactor); ----> not needed???
-	}
-
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -163,11 +142,6 @@ export class MyScene extends CGFscene {
     this.loadIdentity();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
-
-    /* ---------------------------------- */
-    /* -------------FIX THIS------------- */
-    // this.setActiveShader(this.windShader);
-    /* ---------------------------------- */
   
     
 
@@ -257,7 +231,6 @@ export class MyScene extends CGFscene {
       
     }
 
-    this.windShader.setUniformsValues({ timeFactor: time / 100 % 100 });
 
 
 

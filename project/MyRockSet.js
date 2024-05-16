@@ -1,4 +1,4 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
 import { MyFlower } from './MyFlower.js';
 import { MyRock } from './MyRock.js';
 /**
@@ -9,7 +9,12 @@ import { MyRock } from './MyRock.js';
 export class MyRockSet extends CGFobject {
     constructor(scene, baseSize) {
         super(scene);
-        this.rockTexture = this.scene.rockTexture;
+
+        this.rockMaterial = new CGFappearance(scene);
+        this.rockTexture = new CGFtexture(this.scene, "images/rock.jpg");
+        this.rockMaterial.setTexture(this.rockTexture);
+        this.rockMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
         this.baseSize = baseSize;
         this.stones = [];
         this.stoneScales = [];
@@ -53,12 +58,10 @@ export class MyRockSet extends CGFobject {
             var baseSize = Math.sqrt(stoneLevel.length);
             for (let j = 0; j < stoneLevel.length; j++){
                 this.scene.pushMatrix();
-                this.rockTexture.bind();
-                this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
                 this.scene.translate(originPile[0] + Math.floor(j/baseSize)*3, originPile[1], originPile[2] + (j%baseSize)*3);
                 this.scene.scale(stoneScaleLevel[j][0], stoneScaleLevel[j][1], stoneScaleLevel[j][2]);
                 this.scene.rotate(stoneRotationLevel[j], 0, 1, 0);
-                this.scene.setDiffuse(0.5, 0.5, 0.5, 1);
+                this.rockMaterial.apply();
                 stoneLevel[j].display();
                 this.scene.popMatrix();
             }
