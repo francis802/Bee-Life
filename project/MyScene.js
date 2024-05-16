@@ -231,7 +231,7 @@ export class MyScene extends CGFscene {
       
     }
 
-
+    this.grassField.update(time);
 
 
     

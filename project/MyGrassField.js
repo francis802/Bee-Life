@@ -22,6 +22,7 @@ export class MyGrassField extends CGFobject {
         this.grassMaterial.setDiffuse(0, 0.6, 0, 1);
 
         this.windShader = new CGFshader(this.scene.gl, "shaders/wind.vert", "shaders/wind.frag");
+        this.windShader.setUniformsValues({timeFactor : 0});
     }
 
     randomMinMax(min, max){
@@ -65,6 +66,6 @@ export class MyGrassField extends CGFobject {
     }
 
     update(time) {
-        this.windShader.setUniformsValues({timeFactor: time / 50000});
+        this.windShader.setUniformsValues({timeFactor: time / 100 % 100 });
     }
 }
