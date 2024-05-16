@@ -69,16 +69,16 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 1, 20, 20);
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
-    this.garden = new MyGarden(this, 5);
+    this.garden = new MyGarden(this, 2);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
     this.grass = new MyGrass(this)
     this.grassField = new MyGrassField(this);
 
-    this.bee = new MyBee(this);
 
     this.hive = new MyHive(this, 1, 20, 20);
-
+    this.hive.setPosition([-51 + 1.5*this.hiveRockBase,-100 + 1.5*this.hiveRockBase,-51 + 1.5*this.hiveRockBase]);
+    this.bee = new MyBee(this, this.garden.getFlowers(), this.hive);
     
 
     //Objects connected to MyInterface
@@ -156,7 +156,7 @@ export class MyScene extends CGFscene {
     this.popMatrix();
     
     this.pushMatrix();
-    this.translate(-51 + 1.5*this.hiveRockBase, -100 + 1.5*this.hiveRockBase, -51 + 1.5*this.hiveRockBase)
+    this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])
     this.rotate(Math.PI, 0, 1, 0);
     this.hive.display();
     this.popMatrix();
@@ -199,7 +199,7 @@ export class MyScene extends CGFscene {
   }
 
   checkKeys(){
-    var output = [0,0,0,0,0];
+    var output = [0,0,0,0,0,0];
     if (this.gui.isKeyPressed("KeyW")){
         output[0]=1;
     }
@@ -214,6 +214,15 @@ export class MyScene extends CGFscene {
     }
     if (this.gui.isKeyPressed("KeyR")){
         output[2]=1;
+    }
+    if (this.gui.isKeyPressed("KeyF")){
+      output[3]=1;
+    }
+    if (this.gui.isKeyPressed("KeyP")){
+      output[4]=1;
+    }
+    if (this.gui.isKeyPressed("KeyO")){
+      output[5]=1;
     }
     
     //console.log(output);
