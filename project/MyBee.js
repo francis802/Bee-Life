@@ -3,10 +3,11 @@ import { MySphere } from './MySphere.js';
 import { MyCylinder } from './MyCylinder.js';
 
 export class MyBee extends CGFobject {
-	constructor(scene, flowers) {
+	constructor(scene, flowers, hive) {
 		super(scene);
         this.sphere = new MySphere(scene, 1, 20, 20);
         this.flowers = flowers;
+        this.hive = hive;
         
 
         // Head & Torax:
@@ -52,6 +53,7 @@ export class MyBee extends CGFobject {
         this.lastConfigurations = [this.position[1], this.speed, this.orientation]; // Last y, speed, orientation
         this.isGoingUp = false;
         this.Searching = false;
+        this.goingToHive = false;
 	}
 
     update(time, counterTime, movementInfo, speedFactor){
@@ -81,19 +83,28 @@ export class MyBee extends CGFobject {
             this.accelerate(movementInfo[0], speedFactor);
             
         }
-        if (movementInfo[1] != 0){
+        if (movementInfo[1] != 0 && !this.goingToHive){
             this.turn(movementInfo[1]);
         }
         
-        
+        if (this.goingToHive && (this.hive.isNear(this.position))){
+            console.log("entered");
+            this.speed = 0;
+            this.goingToHive = false;
+        }
+
         this.velocity[0] = this.speed*Math.cos(this.orientation);
         this.velocity[2] = -this.speed*Math.sin(this.orientation);
 
         this.position[0] += this.velocity[0]*(counterTime/5);
         this.position[2] += this.velocity[2]*(counterTime/5);
-
         
-
+       
+        if(this.goingToHive){
+           
+            this.position[1] += this.velocity[1]*(counterTime/5);
+        }
+    
         // Flower interaction:
         if (movementInfo[3] != 0 && !this.Searching){
             this.Searching = true;
@@ -104,7 +115,6 @@ export class MyBee extends CGFobject {
         }
         
         
-
         if (this.Searching){
             this.position[1] -= this.velocity[1]*(counterTime/5);
             this.searchAround();  
@@ -133,7 +143,26 @@ export class MyBee extends CGFobject {
             }
         }
         
+        if (movementInfo[5] != 0){
+            console.log("Going to hive");
+            this.goingToHive = true;
+            var direction = [
+                this.hive.position[0] - this.position[0],
+                this.hive.position[1] - this.position[1],
+                this.hive.position[2] - this.position[2]
+            ];
+
+            var distance = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
+
+            direction = [
+                direction[0] / distance,
+                direction[1] / distance,
+                direction[2] / distance
+            ];
         
+            this.orientation = Math.atan2(-direction[2], direction[0]);
+            this.velocity[1] = this.speed*direction[1];
+        }
         
         // Reset position:
         if (movementInfo[2]){

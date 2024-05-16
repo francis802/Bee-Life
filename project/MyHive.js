@@ -18,6 +18,8 @@ export class MyHive extends CGFobject {
         this.dirtMaterial.setTexture(this.scene.dirtTexture);
         this.dirtMaterial.setTextureWrap('REPEAT', 'REPEAT');
 
+        this.position = [];
+
         this.initBuffers();
     }
 
@@ -43,5 +45,17 @@ export class MyHive extends CGFobject {
         this.balcony.display();
         this.scene.popMatrix();
 
+    }
+    
+    setPosition(pos){
+        this.position = pos;
+    }
+
+    isNear(pos){
+        if (Math.abs(pos[0] - this.position[0]) < 3 && Math.abs(pos[2] - this.position[2]) < 3){
+            console.log("near");
+            return true;
+        }
+        return false;
     }
 }
