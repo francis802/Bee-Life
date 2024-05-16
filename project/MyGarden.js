@@ -51,8 +51,13 @@ export class MyGarden extends CGFobject {
                 this.scene.translate(i*20,0,j*20);
                 this.scene.rotate(this.flowers_angles[i][j], 0, 1, 0);
                 this.flowers[i*this.nflowers + j].display();
+                this.flowers[i*this.nflowers + j].setPosition([i*20, -100, j*20]);
                 this.scene.popMatrix();
             }
         }
+    }
+
+    getFlowers(){
+        return this.flowers;
     }
 }
