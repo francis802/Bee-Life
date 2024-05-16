@@ -66,11 +66,11 @@ export class MyScene extends CGFscene {
     //------ Shaders
     this.windShader = new CGFshader(this.gl, "shaders/wind.vert", "shaders/wind.frag");
 
-    this.shadersDiv = document.getElementById("shaders");
-		this.vShaderDiv = document.getElementById("vshader");
-		this.fShaderDiv = document.getElementById("fshader");
+    //his.shadersDiv = document.getElementById("shaders");
+		//this.vShaderDiv = document.getElementById("vshader");
+		//this.fShaderDiv = document.getElementById("fshader");
 
-    this.onShaderInit();
+    //this.onShaderInit();
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -164,7 +164,10 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
-    // this.setActiveShader(this.windShader); -- FIX THIS
+    /* ---------------------------------- */
+    /* -------------FIX THIS------------- */
+    // this.setActiveShader(this.windShader);
+    /* ---------------------------------- */
   
     
 
