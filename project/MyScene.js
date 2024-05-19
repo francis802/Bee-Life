@@ -14,8 +14,20 @@ import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
 
 import { MyHive } from "./MyHive.js";
+import { MyGrass } from "./MyGrass.js";
+import { MyGrassField } from "./MyGrassField.js";
 
+/**
+ * getStringFromUrl(url)
+ * Function to load a text file from a URL (used to display shader sources)
+ */
 
+function getStringFromUrl(url) {
+	var xmlHttpReq = new XMLHttpRequest();
+    xmlHttpReq.open("GET", url, false);
+    xmlHttpReq.send();
+    return xmlHttpReq.responseText;
+}
 
 /**
  * MyScene
@@ -44,19 +56,14 @@ export class MyScene extends CGFscene {
     this.setUpdatePeriod(50);
 
     //------ Textures
-    this.earth_texture = new CGFtexture(this, 'images/earth.jpg');
-    this.panorama_texture = new CGFtexture(this, 'images/panorama4.jpg');
-    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
     this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
-
-
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.panorama = new MyPanorama(this, this.panorama_texture);
+    this.panorama = new MyPanorama(this);
     this.flower = new MyFlower(this);
     this.leaf = new MyLeaf(this);
     this.rock = new MyRock(this, 1, 20, 20);
@@ -65,6 +72,8 @@ export class MyScene extends CGFscene {
     this.garden = new MyGarden(this, 2);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
+    this.grass = new MyGrass(this)
+    this.grassField = new MyGrassField(this);
 
 
     this.hive = new MyHive(this, 1, 20, 20);
@@ -133,7 +142,6 @@ export class MyScene extends CGFscene {
     this.loadIdentity();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
-
   
     
 
@@ -142,10 +150,11 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
-
+    
     this.pushMatrix();
     //this.flower.display();
     this.popMatrix();
+    
     this.pushMatrix();
     this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])
     this.rotate(Math.PI, 0, 1, 0);
@@ -228,6 +237,14 @@ export class MyScene extends CGFscene {
 
     this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
       
+    }
+
+
+
+
+    
+    
+    
   }
 
   

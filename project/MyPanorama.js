@@ -1,12 +1,17 @@
 import { CGFobject } from '../../lib/CGF.js';
+import { CGFappearance, CGFtexture } from '../lib/CGF.js';
 import { MySphere } from './MySphere.js';
 
 export class MyPanorama extends CGFobject {
 
-    constructor(scene, panorama_texture) {
+    constructor(scene) {
         super(scene);
         this.sphere = new MySphere(scene, 200, 20, 20, true); // Sphere inside
-        this.panorama_texture = panorama_texture;
+        this.panoramaMaterial = new CGFappearance(scene);
+        this.panoramaTexture = new CGFtexture(this.scene, 'images/panorama4.jpg');
+        this.panoramaMaterial.setTexture(this.panoramaTexture);
+        this.panoramaMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
         this.initBuffers();
     }
 
@@ -16,8 +21,7 @@ export class MyPanorama extends CGFobject {
 
     display() {
         this.scene.pushMatrix();
-        this.panorama_texture.bind();
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.panoramaMaterial.apply();
         this.sphere.display();
         this.scene.popMatrix();
       }
