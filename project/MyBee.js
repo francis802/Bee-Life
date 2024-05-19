@@ -97,12 +97,13 @@ export class MyBee extends CGFobject {
             this.turn(movementInfo[1]);
         }
         
-        if (this.goingToHive && (this.hive.isNear(this.position)) && this.catchPollen){
+        if (this.goingToHive && (this.hive.isNear(this.position))){
             console.log("entered");
             this.speed = 0;
             this.goingToHive = false;
+            if(this.catchPollen) this.hive.addPollen();
             this.catchPollen = false;
-            this.hive.addPollen();
+            
         }
 
         this.velocity[0] = this.speed*Math.cos(this.orientation);
@@ -118,9 +119,10 @@ export class MyBee extends CGFobject {
         }
     
         // Flower interaction:
-        if (movementInfo[3] != 0 && !this.Searching){
+        if (movementInfo[3] != 0 && !this.Searching && !this.isGoingUp && !this.goingToHive){
             this.Searching = true;
-            this.velocity[1] = this.speed;
+            if( this.speed == 0) this.velocity[1] = speedFactor;
+            else this.velocity[1] = this.speed;
             this.lastConfigurations[0] = this.position[1];
             this.lastConfigurations[1] = this.speed;
             this.lastConfigurations[2] = this.orientation;
@@ -132,12 +134,14 @@ export class MyBee extends CGFobject {
             this.searchAround();  
         }
 
-        if(movementInfo[4] && this.isNearFlower){
+        if(movementInfo[4] && !this.Searching && !this.goingToHive){
+            if(this.isNearFlower){
+                this.isNearFlower.hasPollen = false;
+                this.catchPollen = true;
+            }
             console.log("Bee: ", this.position);
-            this.isNearFlower.hasPollen = false;
             this.isGoingUp = true;
             this.velocity[1] = 0.2;
-            this.catchPollen = true;
         }
 
         if (this.isGoingUp){
@@ -149,14 +153,13 @@ export class MyBee extends CGFobject {
                 this.speed = this.lastConfigurations[1];
                 this.orientation = this.lastConfigurations[2];
                 this.velocity[1] = 0;
-                this.speed = this.lastConfigurations[1];
                 this.Searching = false;
                 this.isGoingUp = false;
                 this.isNearFlower = null;
             }
         }
         
-        if (movementInfo[5] != 0){
+        if (movementInfo[5] != 0 && !this.Searching && !this.isGoingUp){
             console.log("Going to hive");
             this.goingToHive = true;
             var direction = [
@@ -175,6 +178,8 @@ export class MyBee extends CGFobject {
         
             this.orientation = Math.atan2(-direction[2], direction[0]);
             this.velocity[1] = this.speed*direction[1];
+            if( this.speed == 0) this.accelerate(1, speedFactor);
+            
         }
         
         // Reset position:
@@ -183,6 +188,7 @@ export class MyBee extends CGFobject {
             this.speed = 0;
             this.Searching = false;
             this.isGoingUp = false;
+            this.goingToHive = false;
             console.log("Before position:", this.position);
             this.position[0] = this.defaultPosition[0];
             this.position[1] = this.defaultPosition[1];
@@ -198,11 +204,12 @@ export class MyBee extends CGFobject {
     }
     
     accelerate(v, speedFactor){
-        this.speed += v*speedFactor;
+        
+        if (this.speed + v*speedFactor >= 0) this.speed += v*speedFactor;
     }
 
     searchAround(){
-        
+        console.log("Bee: ", this.position);
         for (let i = 0; i < this.flowers.length; i++){
           
             if (this.flowers[i].isNear(this.position)){
@@ -211,7 +218,11 @@ export class MyBee extends CGFobject {
                 this.velocity[1] = 0;
                 this.isNearFlower = this.flowers[i];
                 console.log("Bee and Flower: ", this.isNearFlower.position);
-
+            }
+            if(this.position[1] <= -97){
+                this.Searching = false;
+                this.speed = 0;
+                this.velocity[1] = 0;
             }
         }
     }
