@@ -1,6 +1,6 @@
 import {CGFtexture, CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MySphere } from './MySphere.js';
-import { MyCylinder } from './MyCylinder.js';
+import { MyPollen } from './MyPollen.js';
 
 export class MyBee extends CGFobject {
 	constructor(scene, flowers, hive) {
@@ -8,6 +8,15 @@ export class MyBee extends CGFobject {
         this.sphere = new MySphere(scene, 1, 20, 20);
         this.flowers = flowers;
         this.hive = hive;
+
+        // Pollen:
+        this.pollen = new MyPollen(scene, 0.3, 20, 20, 2, 1);
+        this.catchPollen = false;
+        this.pollenMaterial = new CGFappearance(scene);
+        this.pollenTexture = new CGFtexture(scene, "images/polen.jpg");
+        this.pollenMaterial.setTexture(this.pollenTexture);
+        this.pollenMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.pollenMaterial.setDiffuse(1, 1, 1, 1);
         
 
         // Head & Torax:
@@ -57,25 +66,26 @@ export class MyBee extends CGFobject {
 	}
 
     update(time, counterTime, movementInfo, speedFactor){
-        // Body oscillation:
-        if (counterTime >= 10 && counterTime < 20){
-            this.position[1] -= 0.1;
-            
-        } 
-        else if (counterTime <10){
-            this.position[1] += 0.1;
-            
-        } 
+        if(counterTime % 2 == 0){
+            // Body oscillation:
+            if (counterTime >= 10 && counterTime < 20){
+                this.position[1] -= 0.1;
+                
+            } 
+            else if (counterTime <10){
+                this.position[1] += 0.1;
+                
+            } 
 
-        // Wing oscillation:
-        if (this.wingsMovDown){
-            this.wingsAngle -= Math.PI/4 ;
-            this.wingsMovDown = false;
-        } else {
-            this.wingsAngle += Math.PI/4 ;
-            this.wingsMovDown = true;
+            // Wing oscillation:
+            if (this.wingsMovDown){
+                this.wingsAngle -= Math.PI/4 ;
+                this.wingsMovDown = false;
+            } else {
+                this.wingsAngle += Math.PI/4 ;
+                this.wingsMovDown = true;
+            }
         }
-
         
 
         // Movement:
@@ -87,10 +97,12 @@ export class MyBee extends CGFobject {
             this.turn(movementInfo[1]);
         }
         
-        if (this.goingToHive && (this.hive.isNear(this.position))){
+        if (this.goingToHive && (this.hive.isNear(this.position)) && this.catchPollen){
             console.log("entered");
             this.speed = 0;
             this.goingToHive = false;
+            this.catchPollen = false;
+            this.hive.addPollen();
         }
 
         this.velocity[0] = this.speed*Math.cos(this.orientation);
@@ -125,6 +137,7 @@ export class MyBee extends CGFobject {
             this.isNearFlower.hasPollen = false;
             this.isGoingUp = true;
             this.velocity[1] = 0.2;
+            this.catchPollen = true;
         }
 
         if (this.isGoingUp){
@@ -208,8 +221,6 @@ export class MyBee extends CGFobject {
         this.scene.translate(this.position[0] , this.position[1], this.position[2]);
         this.scene.rotate(this.orientation, 0, 1, 0);
             
-        
-        
 
         // Head:
         this.buildHead();
@@ -246,6 +257,16 @@ export class MyBee extends CGFobject {
         this.scene.rotate(-this.wingsAngle,1,0,0)
         this.buildLeftWings();
         this.scene.popMatrix();
+
+        if(this.catchPollen){
+            this.scene.pushMatrix();
+            this.scene.translate(0, -1.3, 0);
+            this.scene.rotate(Math.PI/2, 0, 0, 1);
+            this.scene.scale(1.3, 1.3, 1.3);
+            this.pollenMaterial.apply();
+            this.pollen.display();
+            this.scene.popMatrix();
+        }
         
 
     }

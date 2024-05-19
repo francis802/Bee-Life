@@ -1,7 +1,7 @@
-import { CGFobject } from '../../lib/CGF.js';
-import { CGFappearance } from '../lib/CGF.js';
+import {CGFtexture, CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MyUnitCube } from '../tp3/MyUnitCube.js';
 import { MyHiveBody } from './MyHiveBody.js';
+import { MyPollen } from './MyPollen.js';
 
 export class MyHive extends CGFobject {
     constructor(scene) {
@@ -17,6 +17,15 @@ export class MyHive extends CGFobject {
         this.dirtMaterial = new CGFappearance(this.scene);
         this.dirtMaterial.setTexture(this.scene.dirtTexture);
         this.dirtMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
+        // Pollen:
+        this.pollen = new MyPollen(scene, 0.3, 20, 20, 2, 1);
+        this.caughtPollen = 0;
+        this.pollenMaterial = new CGFappearance(scene);
+        this.pollenTexture = new CGFtexture(scene, "images/polen.jpg");
+        this.pollenMaterial.setTexture(this.pollenTexture);
+        this.pollenMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.pollenMaterial.setDiffuse(1, 1, 1, 1);
 
         this.position = [];
 
@@ -45,7 +54,36 @@ export class MyHive extends CGFobject {
         this.balcony.display();
         this.scene.popMatrix();
 
+        if(this.caughtPollen){
+            this.displayPollens();
+        }
+
     }
+    
+    displayPollens() {
+        // Limitar o número de polens a um máximo de 10
+        const maxPollens = Math.min(this.caughtPollen, 18);
+
+        // Iterar sobre o número de polens a serem exibidos
+        for (let i = 0; i < maxPollens; i++) {
+            // Calcular a posição na matriz 2x5
+            let row = Math.floor(i / 9);
+            let col = i % 9;
+    
+            // Calcular as coordenadas de tradução
+            let x = col * 0.5;
+            let z = row * 1.0;
+    
+            // Push matrix, translate, apply material, display pollen, pop matrix
+            this.scene.pushMatrix();
+            this.scene.translate(-2 + x, 2, -5.5 + z);
+            this.pollenMaterial.apply();
+            this.pollen.display();
+            this.scene.popMatrix();
+        }
+    }
+    
+    
     
     setPosition(pos){
         this.position = pos;
@@ -57,5 +95,9 @@ export class MyHive extends CGFobject {
             return true;
         }
         return false;
+    }
+
+    addPollen(){
+        this.caughtPollen++;
     }
 }
