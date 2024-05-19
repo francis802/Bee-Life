@@ -144,7 +144,7 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
-    this.flower.display();
+    //this.flower.display();
     this.popMatrix();
     this.pushMatrix();
     this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])
@@ -226,16 +226,8 @@ export class MyScene extends CGFscene {
 
     var movementInfo = this.checkKeys();
 
-    if(this.counterTime % 2 == 0){
-      this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
+    this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
       
-    }
-
-
-
-    
-    
-    
   }
 
   
