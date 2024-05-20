@@ -59,7 +59,7 @@ export class MyScene extends CGFscene {
     // Textures
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
     this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
-    this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
+   
 
     this.texture = new CGFtexture(this, "images/terrain.jpg");
     this.appearance = new CGFappearance(this);
@@ -89,7 +89,16 @@ export class MyScene extends CGFscene {
 
     this.enableTextures(true);
 
-    // Environment variables:
+    this.texture = new CGFtexture(this, "images/terrain.jpg");
+    this.appearance = new CGFappearance(this);
+    this.appearance.setTexture(this.texture);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.rockMaterial = new CGFappearance(this);
+    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+    this.rockMaterial.setTexture(this.rockTexture);
+    this.rockMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
     this.globalAmbientLight = 0.3;
     this.speedFactor = 0.1;
     this.scaleFactor = 1;
@@ -150,10 +159,14 @@ export class MyScene extends CGFscene {
     this.hive.display();
     this.popMatrix();
 
+    
     this.pushMatrix();
     this.garden.display();
     this.rockPile.display();
     this.popMatrix();
+    
+    
+   
 
     this.pushMatrix();
     this.appearance.apply();
@@ -168,13 +181,19 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.panorama.display();
     this.popMatrix();
+
+   /*
+    this.pushMatrix();
+    this.flower.display();
+    this.popMatrix();
+    */
     
     this.pushMatrix();
     this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
     this.bee.display();
     this.popMatrix();
     //this.camera.setTarget(vec3.fromValues(this.bee.position[0], this.bee.position[1], this.bee.position[2]))
-
+  
 
     // ---- END Primitive drawing section
   }
