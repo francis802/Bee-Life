@@ -195,6 +195,7 @@ export class MyBee extends CGFobject {
                         this.isNearFlower.hasPollen = false;
                         this.catchPollen = true;
                     }
+                    this.isNearFlower = null;
                     console.log("Bee: ", this.position);
                     this.curr_state = this.states.GOING_UP;
                     this.velocity[1] = 0.1;
