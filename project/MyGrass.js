@@ -17,6 +17,7 @@ export class MyGrass extends CGFobject {
 
 		this.scene.pushMatrix();
         this.scene.scale(0.5,1,1);
+        this.scene.rotate(Math.PI, 0, 1, 0);
 		this.triangle.display();
 		this.scene.popMatrix();
 
@@ -30,6 +31,7 @@ export class MyGrass extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-this.lenghtGrass/2,this.lenghtGrass*2,0);
         this.scene.scale(0.5,3,1);
+        this.scene.rotate(Math.PI, 0, 1, 0);
         this.triangle.display();
         this.scene.popMatrix();
         
