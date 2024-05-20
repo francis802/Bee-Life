@@ -55,32 +55,33 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.BLEND);
     this.setUpdatePeriod(50);
 
-    //------ Textures
+
+    // Textures
     this.hiveTexture = new CGFtexture(this, "images/bee_hive_texture.jpg");
     this.dirtTexture = new CGFtexture(this, "images/dirt_texture.jpg");
     this.petalTexture = new CGFtexture(this, "images/white_petal_texture.jpg");
+
+    this.texture = new CGFtexture(this, "images/terrain.jpg");
+    this.appearance = new CGFappearance(this);
+    this.appearance.setTexture(this.texture);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.panorama = new MyPanorama(this);
     this.flower = new MyFlower(this);
-    this.leaf = new MyLeaf(this);
     this.rock = new MyRock(this, 1, 20, 20);
-    this.triangle = new MyPetal(this);
-    this.cylinder = new MyCylinder(this, 20, 20);
     this.garden = new MyGarden(this, 4);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
     this.grass = new MyGrass(this)
     this.grassField = new MyGrassField(this);
-
-
     this.hive = new MyHive(this, 1, 20, 20);
     this.hive.setPosition([-51 + 1.5*this.hiveRockBase,-100 + 1.5*this.hiveRockBase,-51 + 1.5*this.hiveRockBase]);
     this.bee = new MyBee(this, this.garden.getFlowers(), this.hive);
     
-
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
@@ -88,20 +89,10 @@ export class MyScene extends CGFscene {
 
     this.enableTextures(true);
 
-    this.texture = new CGFtexture(this, "images/terrain.jpg");
-    this.appearance = new CGFappearance(this);
-    this.appearance.setTexture(this.texture);
-    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
-
-  
-
+    // Environment variables:
     this.globalAmbientLight = 0.3;
     this.speedFactor = 0.1;
     this.scaleFactor = 1;
-
-
-
-    // Update variables:
     this.counterTime = 0;
     this.runTime = 0;
     this.speed = 1;
@@ -143,9 +134,6 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
   
-    
-
-
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
@@ -154,9 +142,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.translate(-30, 0, 90);
     this.grassField.display();
-   
     this.popMatrix();
-    
     
     this.pushMatrix();
     this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])
@@ -167,11 +153,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.garden.display();
     this.rockPile.display();
-    
     this.popMatrix();
-
-    
-   
 
     this.pushMatrix();
     this.appearance.apply();
@@ -183,13 +165,9 @@ export class MyScene extends CGFscene {
 
     this.setGlobalAmbientLight(this.globalAmbientLight, this.globalAmbientLight, this.globalAmbientLight, 1.0);
 
-   
     this.pushMatrix();
     this.panorama.display();
     this.popMatrix();
-
-   
-    //this.sphere.display();
     
     this.pushMatrix();
     this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
@@ -201,6 +179,7 @@ export class MyScene extends CGFscene {
     // ---- END Primitive drawing section
   }
 
+  // Handle with pressed keys
   checkKeys(){
     var output = [0,0,0,0,0,0];
     if (this.gui.isKeyPressed("KeyW")){
@@ -227,9 +206,6 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyO")){
       output[5]=1;
     }
-    
-    //console.log(output);
-    
     return output;
   }
 
@@ -240,8 +216,6 @@ export class MyScene extends CGFscene {
 
     this.bee.update(time, this.counterTime, movementInfo, this.speedFactor);
       
-    
-
     this.grassField.update(time);
   }
 }

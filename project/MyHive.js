@@ -60,21 +60,18 @@ export class MyHive extends CGFobject {
 
     }
     
+    // Calculate the position of each pollen and display it
+    // only a maximum of 18 pollens (2x9) are displayed
     displayPollens() {
-        // Limitar o número de polens a um máximo de 10
         const maxPollens = Math.min(this.caughtPollen, 18);
 
-        // Iterar sobre o número de polens a serem exibidos
         for (let i = 0; i < maxPollens; i++) {
-            // Calcular a posição na matriz 2x5
             let row = Math.floor(i / 9);
             let col = i % 9;
     
-            // Calcular as coordenadas de tradução
             let x = col * 0.5;
             let z = row * 1.0;
     
-            // Push matrix, translate, apply material, display pollen, pop matrix
             this.scene.pushMatrix();
             this.scene.translate(-2 + x, 2, -5.5 + z);
             this.pollenMaterial.apply();
@@ -83,14 +80,13 @@ export class MyHive extends CGFobject {
         }
     }
     
-    
-    
     setPosition(pos){
         this.position = pos;
     }
 
+    // Returns true if the given position pos is near to the hive and false otherwise
     isNear(pos){
-        if (Math.abs(pos[0] - this.position[0]) < 3 && Math.abs(pos[2] - this.position[2]) < 3){
+        if (Math.abs(pos[0] - this.position[0]) < 7 && Math.abs(pos[2] - this.position[2]) < 7){
             console.log("near");
             return true;
         }

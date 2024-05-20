@@ -27,8 +27,6 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Scale Factor');
 
-
-
         this.initKeys();
 
         return true;
@@ -41,23 +39,22 @@ export class MyInterface extends CGFinterface {
         this.processKeyboard=function(){};
         // create a named array to store which keys are being pressed
         this.activeKeys={};
-        
     }
 
+    // called when a key is pressed down and mark it as active in the array
     processKeyDown(event) {
-        // called when a key is pressed down
-        // mark it as active in the array
+        
         this.activeKeys[event.code]=true;
         
     };
-
+    
+    // returns true if a key is marked as pressed, false otherwise
     isKeyPressed(keyCode) {
-        // returns true if a key is marked as pressed, false otherwise
         return this.activeKeys[keyCode] || false;
     }
 
+    // called when a key is released, mark it as inactive in the array
     processKeyUp(event) {
-        // called when a key is released, mark it as inactive in the array
         this.activeKeys[event.code]=false;
     };
 }

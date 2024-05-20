@@ -14,8 +14,6 @@ export class MyPetal extends CGFobject {
 	}
 
 	display() {
-		
-
 		this.scene.pushMatrix();
 		this.scene.rotate(-this.rotation_angle * Math.PI / 180, 1, 0, 0);
 		this.triagle.display();

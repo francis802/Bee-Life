@@ -126,15 +126,18 @@ export class MyBee extends CGFobject {
                 direction[2] / distance
             ];
             this.time = distance/this.speed;
-            this.acceleration = this.speed/distance;
             this.orientation = Math.atan2(-direction[2], direction[0]);
             if( this.speed == 0) this.accelerate(1, speedFactor);
-            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
+            this.velocity[1] = this.speed*direction[1];
             this.velocity[0] = this.speed*Math.cos(this.orientation);
             this.velocity[2] = -this.speed*Math.sin(this.orientation);
-            
-            
-        }
+            this.acceleration = 1/(4*this.time);
+            console.log("Velocity: ", this.velocity);
+            console.log("Acceleration: ", this.acceleration);
+            }
+        
+        
+
     }
 
     update(time, counterTime, movementInfo, speedFactor){
@@ -220,6 +223,9 @@ export class MyBee extends CGFobject {
                 this.velocity[1] -= this.acceleration;
                 this.updatePos();
                 this.resetMovement(movementInfo);
+                if (this.hive.isNear(this.position)){
+                    this.curr_state = this.states.REACHED_HIVE;
+                }
                 break;
             case this.states.REACHED_HIVE:
                 console.log("entered");
@@ -229,7 +235,7 @@ export class MyBee extends CGFobject {
                 this.velocity[2] = 0;
                 if(this.catchPollen) this.hive.addPollen();
                 this.catchPollen = false;
-                this.startPollenSearch(movementInfo, speedFactor);
+                this.curr_state = this.states.STOPPED;
                 this.resetMovement(movementInfo);
                 break;
 
