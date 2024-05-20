@@ -69,7 +69,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 1, 20, 20);
     this.triangle = new MyPetal(this);
     this.cylinder = new MyCylinder(this, 20, 20);
-    this.garden = new MyGarden(this, 2);
+    this.garden = new MyGarden(this, 4);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
     this.grass = new MyGrass(this)
@@ -152,11 +152,11 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
     
     this.pushMatrix();
+    this.translate(-30, 0, 90);
     this.grassField.display();
-    //this.flower.display();
+   
     this.popMatrix();
-    console.log("Vertices");
-    console.log(this.grass.vertices);
+    
     
     this.pushMatrix();
     this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])
