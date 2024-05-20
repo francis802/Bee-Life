@@ -38,7 +38,7 @@ export class MyGrassField extends CGFobject {
             var row = [];
             var row_heights = [];
             for (let j = 0; j < this.grassSize; j++){
-                row.push(this.randomMinMax(0, 2*Math.PI));
+                row.push(this.randomMinMax(-Math.PI/4, Math.PI/4));
                 row_heights.push(this.randomMinMax(0.5, 1.1));
 
                 this.grass.push(new MyGrass(this.scene));
