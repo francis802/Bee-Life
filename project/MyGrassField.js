@@ -12,7 +12,7 @@ export class MyGrassField extends CGFobject {
         this.grass = [];
         this.grass_angles = [];
         this.grass_heights = [];
-        this.grassSize = 50;
+        this.grassSize = 80;
         this.createField();
 
         this.grassMaterial = new CGFappearance(scene);
