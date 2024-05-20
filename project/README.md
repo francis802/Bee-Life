@@ -34,3 +34,5 @@ Por fim, clica-se em 'O' para a abelha depositar o pólen na colmeia.
 ![Relva](screenshots/project-t06g12-7.png)
 
 ### 7. Desenvolvimentos adicionais
+A abelha realiza um percurso em forma de parábola, tal como se fosse a voar, em vez de se mover em linha reta. Tal acontece quando desce para o chão, quando sobe, e quando se move para a colmeia.
+![Percurso da Abelha](screenshots/project-t06g12-8.png)
