@@ -93,7 +93,8 @@ export class MyBee extends CGFobject {
         // Movement:
         if (movementInfo[0] != 0){   
             this.accelerate(movementInfo[0], speedFactor);
-            
+            this.velocity[0] = this.speed*Math.cos(this.orientation);
+            this.velocity[2] = -this.speed*Math.sin(this.orientation);
         }
         if (movementInfo[1] != 0 && !this.goingToHive){
             this.turn(movementInfo[1]);
@@ -102,17 +103,18 @@ export class MyBee extends CGFobject {
         if (this.goingToHive && (this.hive.isNear(this.position))){
             console.log("entered");
             this.speed = 0;
+            this.velocity[0] = 0;
+            this.velocity[1] = 0;
+            this.velocity[2] = 0;
             this.goingToHive = false;
             if(this.catchPollen) this.hive.addPollen();
             this.catchPollen = false;
             
         }
 
-        this.velocity[0] = this.speed*Math.cos(this.orientation);
-        this.velocity[2] = -this.speed*Math.sin(this.orientation);
-
-        this.position[0] += this.velocity[0]*(counterTime/5);
-        this.position[2] += this.velocity[2]*(counterTime/5);
+        
+        this.position[0] += this.velocity[0];
+        this.position[2] += this.velocity[2];
         
        
         if(this.goingToHive){
@@ -135,7 +137,7 @@ export class MyBee extends CGFobject {
         
         
         if (this.Searching){
-            this.position[1] += this.velocity[1]*(counterTime/5);
+            this.position[1] += this.velocity[1];
             this.velocity[1] -= this.acceleration;
             this.searchAround();  
         }
@@ -153,7 +155,7 @@ export class MyBee extends CGFobject {
 
         if (this.isGoingUp){
             if (this.position[1] <= this.lastConfigurations[0]){
-                this.position[1] += this.velocity[1]*(counterTime/5);
+                this.position[1] += this.velocity[1];
                 this.velocity[1] += this.acceleration;
             }
             else{
@@ -161,6 +163,8 @@ export class MyBee extends CGFobject {
                 this.speed = this.lastConfigurations[1];
                 this.orientation = this.lastConfigurations[2];
                 this.velocity[1] = 0;
+                this.velocity[0] = this.speed*Math.cos(this.orientation);
+                this.velocity[2] = -this.speed*Math.sin(this.orientation);
                 this.Searching = false;
                 this.isGoingUp = false;
                 this.isNearFlower = null;
@@ -185,8 +189,11 @@ export class MyBee extends CGFobject {
             ];
             this.time = distance/this.speed;
             this.orientation = Math.atan2(-direction[2], direction[0]);
-            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
             if( this.speed == 0) this.accelerate(1, speedFactor);
+            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
+            this.velocity[0] = this.speed*Math.cos(this.orientation);
+            this.velocity[2] = -this.speed*Math.sin(this.orientation);
+            
             
         }
         
@@ -197,11 +204,17 @@ export class MyBee extends CGFobject {
             this.Searching = false;
             this.isGoingUp = false;
             this.goingToHive = false;
-            console.log("Before position:", this.position);
+            
             this.position[0] = this.defaultPosition[0];
             this.position[1] = this.defaultPosition[1];
             this.position[2] = this.defaultPosition[2];
-            console.log("After position:", this.position);
+            this.velocity[0] = 0;
+            this.velocity[1] = 0;
+            this.velocity[2] = 0;
+            
+            this.lastConfigurations[0] = this.position[1];
+            this.lastConfigurations[1] = this.speed;
+            this.lastConfigurations[2] = this.orientation;
         }
 
         
@@ -223,14 +236,18 @@ export class MyBee extends CGFobject {
             if (this.flowers[i].isNear(this.position)){
                 this.Searching = false;
                 this.speed = 0;
+                this.velocity[0] = 0;
                 this.velocity[1] = 0;
+                this.velocity[2] = 0;
                 this.isNearFlower = this.flowers[i];
                 console.log("Bee and Flower: ", this.isNearFlower.position);
             }
             if(this.position[1] <= -97){
                 this.Searching = false;
                 this.speed = 0;
+                this.velocity[0] = 0;
                 this.velocity[1] = 0;
+                this.velocity[2] = 0;
             }
         }
     }
