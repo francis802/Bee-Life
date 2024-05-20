@@ -8,6 +8,16 @@ export class MyBee extends CGFobject {
         this.sphere = new MySphere(scene, 1, 20, 20);
         this.flowers = flowers;
         this.hive = hive;
+        this.states = {
+            FLYING: 1,
+            FLYING_POLLEN: 2,
+            SEARCHING: 3,
+            STOPPED: 4,
+            GOING_UP: 5,
+            GOING_TO_HIVE: 6,
+            REACHED_HIVE: 7
+        }
+        this.curr_state = this.states.FLYING;
 
         // Pollen:
         this.pollen = new MyPollen(scene, 0.3, 20, 20, 2, 1);
@@ -67,6 +77,66 @@ export class MyBee extends CGFobject {
         this.goingToHive = false;
 	}
 
+    changeVelocity(movementInfo, speedFactor) {
+        if (movementInfo[0] != 0){   
+            this.accelerate(movementInfo[0], speedFactor);
+            this.velocity[0] = this.speed*Math.cos(this.orientation);
+            this.velocity[2] = -this.speed*Math.sin(this.orientation);
+        }
+        if (movementInfo[1] != 0){
+            this.turn(movementInfo[1]);
+            this.velocity[0] = this.speed*Math.cos(this.orientation);
+            this.velocity[2] = -this.speed*Math.sin(this.orientation);
+        }
+    }
+
+    updatePos(){
+        this.position[0] += this.velocity[0];
+        this.position[2] += this.velocity[2];
+    }
+
+    startPollenSearch(movementInfo, speedFactor){
+        // Flower interaction:
+        if (movementInfo[3] != 0){
+            this.curr_state = this.states.SEARCHING;
+            if( this.speed == 0) this.velocity[1] = speedFactor;
+            else this.velocity[1] = this.speed;
+            this.acceleration = this.speed/15;
+            this.lastConfigurations[0] = this.position[1];
+            this.lastConfigurations[1] = this.speed;
+            this.lastConfigurations[2] = this.orientation;
+        }
+    }
+
+    prepareTripToHive(movementInfo, speedFactor){
+        if (movementInfo[5] != 0){
+            console.log("Going to hive");
+            this.curr_state = this.states.GOING_TO_HIVE;
+            var direction = [
+                this.hive.position[0] - this.position[0],
+                this.hive.position[1] - this.position[1],
+                this.hive.position[2] - this.position[2]
+            ];
+
+            var distance = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
+
+            direction = [
+                direction[0] / distance,
+                direction[1] / distance,
+                direction[2] / distance
+            ];
+            this.time = distance/this.speed;
+            this.acceleration = this.speed/distance;
+            this.orientation = Math.atan2(-direction[2], direction[0]);
+            if( this.speed == 0) this.accelerate(1, speedFactor);
+            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
+            this.velocity[0] = this.speed*Math.cos(this.orientation);
+            this.velocity[2] = -this.speed*Math.sin(this.orientation);
+            
+            
+        }
+    }
+
     update(time, counterTime, movementInfo, speedFactor){
         if(counterTime % 2 == 0){
             // Body oscillation:
@@ -88,122 +158,94 @@ export class MyBee extends CGFobject {
                 this.wingsMovDown = true;
             }
         }
-        
 
-        // Movement:
-        if (movementInfo[0] != 0){   
-            this.accelerate(movementInfo[0], speedFactor);
-            this.velocity[0] = this.speed*Math.cos(this.orientation);
-            this.velocity[2] = -this.speed*Math.sin(this.orientation);
-        }
-        if (movementInfo[1] != 0 && !this.goingToHive){
-            this.turn(movementInfo[1]);
-        }
-        
-        if (this.goingToHive && (this.hive.isNear(this.position))){
-            console.log("entered");
-            this.speed = 0;
-            this.velocity[0] = 0;
-            this.velocity[1] = 0;
-            this.velocity[2] = 0;
-            this.goingToHive = false;
-            if(this.catchPollen) this.hive.addPollen();
-            this.catchPollen = false;
-            
-        }
+        switch (this.curr_state) {
+            case this.states.FLYING:
+                this.changeVelocity(movementInfo, speedFactor);
+                this.updatePos();
+                this.startPollenSearch(movementInfo, speedFactor);
+                this.prepareTripToHive(movementInfo, speedFactor);
+                this.resetMovement(movementInfo);
 
-        
-        this.position[0] += this.velocity[0];
-        this.position[2] += this.velocity[2];
-        
-       
-        if(this.goingToHive){
-           
-            this.position[1] += this.velocity[1];
-            this.velocity[1] -= this.acceleration;
+                break;
+            case this.states.FLYING_POLLEN:
+                this.changeVelocity(movementInfo, speedFactor);
+                this.updatePos();
+                this.startPollenSearch(movementInfo, speedFactor);
+                this.prepareTripToHive(movementInfo, speedFactor);
+                this.resetMovement(movementInfo);
 
-        }
-    
-        // Flower interaction:
-        if (movementInfo[3] != 0 && !this.Searching && !this.isGoingUp && !this.goingToHive){
-            this.Searching = true;
-            if( this.speed == 0) this.velocity[1] = speedFactor;
-            else this.velocity[1] = this.speed;
-            this.acceleration = this.speed/15;
-            this.lastConfigurations[0] = this.position[1];
-            this.lastConfigurations[1] = this.speed;
-            this.lastConfigurations[2] = this.orientation;
-        }
-        
-        
-        if (this.Searching){
-            this.position[1] += this.velocity[1];
-            this.velocity[1] -= this.acceleration;
-            this.searchAround();  
-        }
-
-        if(movementInfo[4] && !this.Searching && !this.goingToHive){
-            if(this.isNearFlower){
-                this.isNearFlower.hasPollen = false;
-                this.catchPollen = true;
-            }
-            console.log("Bee: ", this.position);
-            this.isGoingUp = true;
-            this.velocity[1] = 0.1;
-            this.acceleration = 0.02;
-        }
-
-        if (this.isGoingUp){
-            if (this.position[1] <= this.lastConfigurations[0]){
+                break;
+            case this.states.SEARCHING:
                 this.position[1] += this.velocity[1];
-                this.velocity[1] += this.acceleration;
-            }
-            else{
-                console.log("Going up");
-                this.speed = this.lastConfigurations[1];
-                this.orientation = this.lastConfigurations[2];
+                this.velocity[1] -= this.acceleration;
+                this.updatePos();
+                this.searchAround();  
+                this.resetMovement(movementInfo);
+                break;
+            case this.states.STOPPED:
+                if(movementInfo[4] != 0){
+                    if(this.isNearFlower){
+                        this.isNearFlower.hasPollen = false;
+                        this.catchPollen = true;
+                    }
+                    console.log("Bee: ", this.position);
+                    this.curr_state = this.states.GOING_UP;
+                    this.velocity[1] = 0.1;
+                    this.speed = this.lastConfigurations[1];
+                    this.orientation = this.lastConfigurations[2];
+                    this.velocity[0] = this.speed*Math.cos(this.orientation);
+                    this.velocity[2] = -this.speed*Math.sin(this.orientation);
+
+                    this.acceleration = 0.04;
+                }
+                this.resetMovement(movementInfo);
+                break;
+            case this.states.GOING_UP:
+                console.log(this.velocity);
+                if (this.position[1] <= this.lastConfigurations[0]){
+                    this.position[1] += this.velocity[1];
+                    this.velocity[1] += this.acceleration;
+                    this.updatePos();
+                }
+                else{
+                    this.velocity[1] = 0;
+                    if(this.catchPollen) this.curr_state = this.states.FLYING_POLLEN;
+                    else this.curr_state = this.states.FLYING;
+                }
+                this.resetMovement(movementInfo);
+                break;
+            case this.states.GOING_TO_HIVE:
+                this.position[1] += this.velocity[1];
+                this.velocity[1] -= this.acceleration;
+                this.updatePos();
+                this.resetMovement(movementInfo);
+                break;
+            case this.states.REACHED_HIVE:
+                console.log("entered");
+                this.speed = 0;
+                this.velocity[0] = 0;
                 this.velocity[1] = 0;
-                this.velocity[0] = this.speed*Math.cos(this.orientation);
-                this.velocity[2] = -this.speed*Math.sin(this.orientation);
-                this.Searching = false;
-                this.isGoingUp = false;
-                this.isNearFlower = null;
-            }
-        }
-        
-        if (movementInfo[5] != 0 && !this.Searching && !this.isGoingUp){
-            console.log("Going to hive");
-            this.goingToHive = true;
-            var direction = [
-                this.hive.position[0] - this.position[0],
-                this.hive.position[1] - this.position[1],
-                this.hive.position[2] - this.position[2]
-            ];
+                this.velocity[2] = 0;
+                if(this.catchPollen) this.hive.addPollen();
+                this.catchPollen = false;
+                this.startPollenSearch(movementInfo, speedFactor);
+                this.resetMovement(movementInfo);
+                break;
 
-            var distance = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
-
-            direction = [
-                direction[0] / distance,
-                direction[1] / distance,
-                direction[2] / distance
-            ];
-            this.time = distance/this.speed;
-            this.orientation = Math.atan2(-direction[2], direction[0]);
-            if( this.speed == 0) this.accelerate(1, speedFactor);
-            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
-            this.velocity[0] = this.speed*Math.cos(this.orientation);
-            this.velocity[2] = -this.speed*Math.sin(this.orientation);
-            
-            
         }
-        
-        // Reset position:
-        if (movementInfo[2]){
+    }
+
+    resetMovement(movementInfo){
+        if (movementInfo[2] != 0){
             this.orientation = 0;
             this.speed = 0;
-            this.Searching = false;
-            this.isGoingUp = false;
-            this.goingToHive = false;
+            if (this.catchPollen){
+                this.curr_state = this.states.FLYING_POLLEN;
+            }
+            else{
+                this.curr_state = this.states.FLYING;
+            }
             
             this.position[0] = this.defaultPosition[0];
             this.position[1] = this.defaultPosition[1];
@@ -216,8 +258,6 @@ export class MyBee extends CGFobject {
             this.lastConfigurations[1] = this.speed;
             this.lastConfigurations[2] = this.orientation;
         }
-
-        
     }
 
     turn(v){
@@ -234,20 +274,24 @@ export class MyBee extends CGFobject {
         for (let i = 0; i < this.flowers.length; i++){
           
             if (this.flowers[i].isNear(this.position)){
-                this.Searching = false;
+                this.curr_state = this.states.STOPPED;
+                this.lastConfigurations[1] = this.speed;
+                this.lastConfigurations[2] = this.orientation;
                 this.speed = 0;
                 this.velocity[0] = 0;
                 this.velocity[1] = 0;
                 this.velocity[2] = 0;
                 this.isNearFlower = this.flowers[i];
                 console.log("Bee and Flower: ", this.isNearFlower.position);
+                break;
             }
             if(this.position[1] <= -97){
-                this.Searching = false;
+                this.curr_state = this.states.STOPPED;
                 this.speed = 0;
                 this.velocity[0] = 0;
                 this.velocity[1] = 0;
                 this.velocity[2] = 0;
+                break;
             }
         }
     }

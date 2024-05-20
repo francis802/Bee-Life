@@ -68,16 +68,16 @@ export class MyFlower extends CGFobject {
         // Distância euclidiana em x e z
         let dx = this.position[0] - position[0];
         let dz = this.position[2] - position[2];
-        let distanceXY = Math.sqrt(dx * dx + dz * dz);
+        let distanceXZ = Math.sqrt(dx * dx + dz * dz);
     
-        // Verifica se a distância em xz é menor ou igual a 0.5
-        let isWithinXY = distanceXY <= 2;
+        // Verifica se a distância em xz é menor ou igual
+        let isWithinXZ = distanceXZ <= this.receptacleRadius + this.lenghtPetals + 2;
     
         // Verifica se a posição y está dentro da altura do objeto
-        let isWithinHeight = position[1] <= (this.position[1]+this.stemHeight+this.receptacleRadius);
+        let isWithinHeight = Math.abs(position[1] - (this.position[1]+this.stemHeight+this.receptacleRadius)) <= this.receptacleRadius + this.lenghtPetals + 1;
         //console.log("Height: ", thisposition[1]+this.stemHeight+this.receptacleRadius);
         //console.log("Bee Height: ", isWithinHeight);
-        return isWithinXY && isWithinHeight;
+        return isWithinXZ && isWithinHeight;
     }
 
     setPosition(position){
