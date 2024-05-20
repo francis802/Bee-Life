@@ -56,6 +56,8 @@ export class MyBee extends CGFobject {
         this.orientation = 0; 
         this.speed = 0;
         this.velocity = [0,0,0];
+        this.acceleration = 0;
+        this.time = 0;
         this.defaultPosition = [-50, -50, 0];
         this.position = [-50, -50, 0];
         this.isNearFlower = null;
@@ -115,7 +117,9 @@ export class MyBee extends CGFobject {
        
         if(this.goingToHive){
            
-            this.position[1] += this.velocity[1]*(counterTime/5);
+            this.position[1] += this.velocity[1];
+            this.velocity[1] -= this.acceleration;
+
         }
     
         // Flower interaction:
@@ -123,6 +127,7 @@ export class MyBee extends CGFobject {
             this.Searching = true;
             if( this.speed == 0) this.velocity[1] = speedFactor;
             else this.velocity[1] = this.speed;
+            this.acceleration = this.speed/15;
             this.lastConfigurations[0] = this.position[1];
             this.lastConfigurations[1] = this.speed;
             this.lastConfigurations[2] = this.orientation;
@@ -130,7 +135,8 @@ export class MyBee extends CGFobject {
         
         
         if (this.Searching){
-            this.position[1] -= this.velocity[1]*(counterTime/5);
+            this.position[1] += this.velocity[1]*(counterTime/5);
+            this.velocity[1] -= this.acceleration;
             this.searchAround();  
         }
 
@@ -141,12 +147,14 @@ export class MyBee extends CGFobject {
             }
             console.log("Bee: ", this.position);
             this.isGoingUp = true;
-            this.velocity[1] = 0.2;
+            this.velocity[1] = 0.1;
+            this.acceleration = 0.02;
         }
 
         if (this.isGoingUp){
             if (this.position[1] <= this.lastConfigurations[0]){
                 this.position[1] += this.velocity[1]*(counterTime/5);
+                this.velocity[1] += this.acceleration;
             }
             else{
                 console.log("Going up");
@@ -175,9 +183,9 @@ export class MyBee extends CGFobject {
                 direction[1] / distance,
                 direction[2] / distance
             ];
-        
+            this.time = distance/this.speed;
             this.orientation = Math.atan2(-direction[2], direction[0]);
-            this.velocity[1] = this.speed*direction[1];
+            this.velocity[1] = this.speed*direction[1] + this.acceleration*this.time;
             if( this.speed == 0) this.accelerate(1, speedFactor);
             
         }
