@@ -5,7 +5,7 @@ import { MySphere } from './MySphere.js';
 import { MyPollen } from './MyPollen.js';
 
 export class MyFlower extends CGFobject {
-	constructor(scene, flowerRadius=2, numPetals=7, petalsColor=[2, 0, 1, 1], receptacleRadius=1, receptacleColor=[0, 1, 1, 1], stemRadius=0.1, numSubStem=6, stemColor=[0, 5, 0, 1], leafColor=[0, 1, 0, 1]) {
+	constructor(scene, flowerRadius=2, numPetals=7, petalsColor=[0.9, 0.8, 0.1, 1], receptacleRadius=1, receptacleColor=[0.1, 0.1, 0.1, 1], stemRadius=0.1, numSubStem=9, stemColor=[0, 0.9, 0, 1], leafColor=[0, 1, 0, 1]) {
 		super(scene);
         // Parameters:
         this.flowerRadius = flowerRadius;

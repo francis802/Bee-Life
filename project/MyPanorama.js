@@ -8,7 +8,7 @@ export class MyPanorama extends CGFobject {
         super(scene);
         this.sphere = new MySphere(scene, 200, 20, 20, true); // Sphere inside
         this.panoramaMaterial = new CGFappearance(scene);
-        this.panoramaTexture = new CGFtexture(this.scene, 'images/panorama4.jpg');
+        this.panoramaTexture = new CGFtexture(this.scene, 'images/panorama_sunflower.jpg');
         this.panoramaMaterial.setTexture(this.panoramaTexture);
         this.panoramaMaterial.setTextureWrap('REPEAT', 'REPEAT');
 

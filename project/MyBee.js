@@ -102,6 +102,9 @@ export class MyBee extends CGFobject {
             if( this.speed == 0) this.velocity[1] = speedFactor;
             else this.velocity[1] = this.speed;
             this.acceleration = this.speed/15;
+            if (this.acceleration == 0) {
+                this.acceleration = 0.02;
+            }
             this.lastConfigurations[0] = this.position[1];
             this.lastConfigurations[1] = this.speed;
             this.lastConfigurations[2] = this.orientation;
@@ -131,7 +134,7 @@ export class MyBee extends CGFobject {
             this.velocity[1] = this.speed*direction[1];
             this.velocity[0] = this.speed*Math.cos(this.orientation);
             this.velocity[2] = -this.speed*Math.sin(this.orientation);
-            this.acceleration = 1/(4*this.time);
+            this.acceleration = 1/(this.time*this.time);
             console.log("Velocity: ", this.velocity);
             console.log("Acceleration: ", this.acceleration);
             }

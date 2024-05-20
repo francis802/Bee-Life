@@ -72,7 +72,7 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.panorama = new MyPanorama(this);
     this.flower = new MyFlower(this);
-    this.rock = new MyRock(this, 1, 20, 20);
+    this.rock = new MyRock(this, 2, 20, 20);
     this.garden = new MyGarden(this, 4);
     this.hiveRockBase = 7;
     this.rockPile = new MyRockSet(this, this.hiveRockBase);
@@ -95,7 +95,7 @@ export class MyScene extends CGFscene {
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
     this.rockMaterial = new CGFappearance(this);
-    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+    this.rockTexture = new CGFtexture(this, "images/rock3.jpg");
     this.rockMaterial.setTexture(this.rockTexture);
     this.rockMaterial.setTextureWrap('REPEAT', 'REPEAT');
 
@@ -164,7 +164,48 @@ export class MyScene extends CGFscene {
     this.garden.display();
     this.rockPile.display();
     this.popMatrix();
+
+    for (let i = 0; i < 40; i++) {
+      this.pushMatrix();
+      this.translate(140*Math.cos(2*Math.PI/40*i), -100, 140*Math.sin(2*Math.PI/40*i));
+      this.rotate(Math.PI/2 + Math.PI/20*(20-i), 0, 1, 0);
+      this.flower.display();
+      this.popMatrix();
+    }
     
+    for (let i = 0; i < 30; i++) {
+      this.pushMatrix();
+      this.translate(130*Math.cos(2*Math.PI/30*i), -100, 130*Math.sin(2*Math.PI/30*i));
+      this.rotate(Math.PI/2 + Math.PI/15*(15-i), 0, 1, 0);
+      this.flower.display();
+      this.popMatrix();
+    }
+
+    for (let i = 0; i < 20; i++) {
+      this.pushMatrix();
+      this.translate(115*Math.cos(2*Math.PI/20*i + Math.PI/20), -100, 115*Math.sin(2*Math.PI/20*i + Math.PI/20));
+      this.rotate(Math.PI/2 + Math.PI/10*(10-i), 0, 1, 0);
+      this.flower.display();
+      this.popMatrix();
+    }
+
+    for (let i = 0; i < 15; i++) {
+      this.pushMatrix();
+      this.translate(105*Math.cos(2*Math.PI/15*i), -100, 105*Math.sin(2*Math.PI/15*i));
+      this.rotate(Math.PI/2 + Math.PI/7.5*(7.5-i), 0, 1, 0);
+      this.flower.display();
+      this.popMatrix();
+    }
+
+    for (let i = 0; i < 70; i++) {
+      this.pushMatrix();
+      this.translate((135-i/2*Math.sin(i))*Math.cos(2*Math.PI/30*i), -100, (135-i/2*Math.cos(i))*Math.sin(2*Math.PI/30*i));
+      this.scale(1,0.5,1);
+      this.rotate(Math.PI/15*i, 0, 1, 0);
+      this.rockMaterial.apply();
+      this.rock.display();
+      this.popMatrix();
+    }
     
    
 
@@ -181,12 +222,6 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.panorama.display();
     this.popMatrix();
-
-   /*
-    this.pushMatrix();
-    this.flower.display();
-    this.popMatrix();
-    */
     
     this.pushMatrix();
     this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
