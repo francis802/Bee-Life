@@ -155,7 +155,8 @@ export class MyScene extends CGFscene {
     this.grassField.display();
     //this.flower.display();
     this.popMatrix();
-    
+    console.log("Vertices");
+    console.log(this.grass.vertices);
     
     this.pushMatrix();
     this.translate(this.hive.position[0], this.hive.position[1], this.hive.position[2])

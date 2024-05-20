@@ -63,7 +63,6 @@ export class MyBee extends CGFobject {
         this.isGoingUp = false;
         this.Searching = false;
         this.goingToHive = false;
-        this.currentSpeedFactor = 0.1;
 	}
 
     update(time, counterTime, movementInfo, speedFactor){
@@ -90,15 +89,8 @@ export class MyBee extends CGFobject {
         
 
         // Movement:
-        if (movementInfo[0] != 0 || this.currentSpeedFactor != speedFactor){
-            console.log("Speed factor: ", speedFactor);  
+        if (movementInfo[0] != 0){   
             this.accelerate(movementInfo[0], speedFactor);
-            this.currentSpeedFactor = speedFactor;
-            console.log("Speed: ", this.speed);  
-            this.velocity[0] = this.speed*Math.cos(this.orientation);
-            this.velocity[2] = -this.speed*Math.sin(this.orientation);
-            console.log("Velocity x: ", this.velocity[0]);  
-            console.log("Velocity z: ", this.velocity[2]);  
             
         }
         if (movementInfo[1] != 0 && !this.goingToHive){
@@ -114,14 +106,16 @@ export class MyBee extends CGFobject {
             
         }
 
-        
-        this.position[0] += this.velocity[0];
-        this.position[2] += this.velocity[2];
+        this.velocity[0] = this.speed*Math.cos(this.orientation);
+        this.velocity[2] = -this.speed*Math.sin(this.orientation);
+
+        this.position[0] += this.velocity[0]*(counterTime/5);
+        this.position[2] += this.velocity[2]*(counterTime/5);
         
        
         if(this.goingToHive){
            
-            this.position[1] += this.velocity[1];
+            this.position[1] += this.velocity[1]*(counterTime/5);
         }
     
         // Flower interaction:
@@ -132,12 +126,11 @@ export class MyBee extends CGFobject {
             this.lastConfigurations[0] = this.position[1];
             this.lastConfigurations[1] = this.speed;
             this.lastConfigurations[2] = this.orientation;
-            console.log("Bee: ", this.position);
         }
         
         
         if (this.Searching){
-            this.position[1] -= this.velocity[1];
+            this.position[1] -= this.velocity[1]*(counterTime/5);
             this.searchAround();  
         }
 
@@ -153,7 +146,7 @@ export class MyBee extends CGFobject {
 
         if (this.isGoingUp){
             if (this.position[1] <= this.lastConfigurations[0]){
-                this.position[1] += this.velocity[1];
+                this.position[1] += this.velocity[1]*(counterTime/5);
             }
             else{
                 console.log("Going up");
@@ -200,9 +193,6 @@ export class MyBee extends CGFobject {
             this.position[0] = this.defaultPosition[0];
             this.position[1] = this.defaultPosition[1];
             this.position[2] = this.defaultPosition[2];
-            this.lastConfigurations[0] = this.position[1];
-            this.lastConfigurations[1] = this.speed;
-            this.lastConfigurations[2] = this.orientation;
             console.log("After position:", this.position);
         }
 
@@ -214,6 +204,7 @@ export class MyBee extends CGFobject {
     }
     
     accelerate(v, speedFactor){
+        
         if (this.speed + v*speedFactor >= 0) this.speed += v*speedFactor;
     }
 
